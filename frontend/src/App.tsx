@@ -6,7 +6,6 @@ import TopNavbar from './Navbar/TopNavbar'
 import SuccessToast from './Toast/SuccessToast'
 import TextCollapse from './Collapse/TextCollapse'
 
-
 function App() {
 
   return (
