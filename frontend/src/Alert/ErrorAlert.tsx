@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
-function ErrorAlert() {
-  const [show, setShow] = useState(true);
+const ErrorAlert: React.FC = () => {
+  const [show, setShow] = useState<boolean>(true);
 
   if (show) {
     return (
