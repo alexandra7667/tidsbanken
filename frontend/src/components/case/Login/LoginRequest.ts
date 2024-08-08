@@ -8,24 +8,26 @@ export default async function loginRequest(
   },
   navigate: NavigateFunction
 ) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
+  // const headers = {
+  //   "Content-Type": "application/json",
+  // };
 
-  const fetchResponse = await fetch(`${backendUrl}/login`, {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify(loginData),
-  });
+  // const fetchResponse = await fetch(`${backendUrl}/login`, {
+  //   method: "POST",
+  //   headers: headers,
+  //   body: JSON.stringify(loginData),
+  // });
 
-  if (!fetchResponse.ok) {
-    console.log("Failed to log in user");
-  } else {
-    const response = await fetchResponse.json();
+  // if (!fetchResponse.ok) {
+  //   console.log("Failed to log in user");
+  // } else {
+  //   const response = await fetchResponse.json();
 
-    //localStorage.setItem("token", response.token);
-    //setUser(response);
+  //   localStorage.setItem("token", response.token);
+  //   setUser(response);
 
-    navigate("/dashboard");
-  }
+  //   navigate("/dashboard");
+  // }
+
+  navigate("/dashboard");
 }

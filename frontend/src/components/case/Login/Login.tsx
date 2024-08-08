@@ -53,6 +53,7 @@ export default function Login() {
                 required
                 type="text"
                 placeholder="Enter username"
+                name="username" 
                 value={loginData.username}
                 onChange={handleChange}
                 isInvalid={validated && !loginData.username}
@@ -68,6 +69,7 @@ export default function Login() {
                 required
                 type="password"
                 placeholder="Enter password"
+                name="password" 
                 value={loginData.password}
                 onChange={handleChange}
                 isInvalid={validated && !loginData.password}
