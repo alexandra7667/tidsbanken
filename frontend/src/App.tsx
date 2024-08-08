@@ -1,24 +1,17 @@
+import Footer from './components/case/Footer/Footer.tsx'
+import Header from './components/case/Header/Header.tsx'
+import Main from './components/case/Main/Main.tsx'
 
-import AlertDismissibleExample from './Alert/ErrorAlert'
-import SubmitButton from './Buttons/SubmitButton'
-import InputModal from './Modal/InputModal'
-import TopNavbar from './Navbar/TopNavbar'
-import SuccessToast from './Toast/SuccessToast'
-import TextCollapse from './Collapse/TextCollapse'
 
 function App() {
 
   return (
     <>
-      <TopNavbar />
-      <h1>Hello and welcome</h1>
-      <SuccessToast />
-      <AlertDismissibleExample />
-      <SubmitButton />
-      <InputModal />
-      <TextCollapse />
+      <Header />
+      <Main />
+      <Footer />
     </>
   )
 }
 
-export default App
+export { App }
