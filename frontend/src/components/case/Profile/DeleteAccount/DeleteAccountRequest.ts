@@ -1,25 +1,26 @@
+import { NavigateFunction } from "react-router-dom";
 import { backendUrl } from "../../../assets/strings/backendUrl";
 
-export default async function updateEmailRequest(
-  newEmail: string
-) {
+export default async function deleteAccountRequest(navigate: NavigateFunction) {
   // const token = localStorage.getItem('token'):
   // const headers = {
   //   "Content-Type": "application/json",
   //    "Authorization": `Bearer: ${token}`
   // };
   // const fetchResponse = await fetch(`${backendUrl}/user/${userData.id}`, {
-  //   method: "PATCH",
+  //   method: "DELETE",
   //   headers: headers,
-  //   body: JSON.stringify(newEmail),
   // });
   // if (!fetchResponse.ok) {
-  //   console.log("Failed to update email");
+  //   console.log("Failed to delete user");
   // Create alert
   // }
   // else {
-  //   const response = await fetchResponse.json();
+  //   console.log("User deleted successfully");
   // Create toast
-  //   setUser(email=response.email);
+  // Log out
+  //   setUserData(null);
+  //    localStorage.clear();
+  //    navigate('/');
   // }
 }

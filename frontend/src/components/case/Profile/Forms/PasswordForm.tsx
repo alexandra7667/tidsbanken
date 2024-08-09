@@ -40,7 +40,7 @@ export default function PasswordForm() {
       onSubmit={handlePasswordSubmit}
     >
       <Form.Group className="mb-3" controlId="formOldPassword">
-        <Form.Label>Old password</Form.Label>
+        <Form.Label>Enter your password</Form.Label>
         <Form.Control
           required
           type="password"
