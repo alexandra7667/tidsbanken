@@ -20,6 +20,7 @@ export default async function loginRequest(
 
   // if (!fetchResponse.ok) {
   //   console.log("Failed to log in user");
+  // Create alert
   // } else {
   //   const response = await fetchResponse.json();
 
