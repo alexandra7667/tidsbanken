@@ -1,4 +1,4 @@
-import { backendUrl } from "../../../assets/strings/backendUrl";
+import { backendUrl } from "../../../../assets/strings/backendUrl";
 
 export default async function updateEmailRequest(
   newEmail: string

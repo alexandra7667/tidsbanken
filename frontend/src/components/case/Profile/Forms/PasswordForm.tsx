@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import updatePasswordRequest from "../UpdatePasswordRequest";
+import updatePasswordRequest from "./UpdatePasswordRequest";
 
 export default function PasswordForm() {
   const [password, setPassword] = useState({
@@ -9,13 +8,12 @@ export default function PasswordForm() {
     newPassword: "",
   });
   const [passwordValidated, setPasswordValidated] = useState(false);
-  const navigate = useNavigate();
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword({
-      ...password,
+    setPassword((prevPassword) => ({
+      ...prevPassword,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handlePasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -26,7 +24,7 @@ export default function PasswordForm() {
       e.stopPropagation();
     } else {
       console.log("Profile form password data: ", password);
-      updatePasswordRequest(password, navigate);
+      updatePasswordRequest(password);
     }
 
     //Show valid/invalid feedback

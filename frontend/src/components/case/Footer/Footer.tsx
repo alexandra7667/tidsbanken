@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <>
       <Container>
-        <Row className="justify-content-center mt-4">
+        <Row className="justify-content-center m-4">
           <Col xs="auto">
             <p>©2024 Tidsbanken</p>
           </Col>
