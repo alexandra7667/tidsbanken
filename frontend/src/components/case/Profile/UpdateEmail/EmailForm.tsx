@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
-import updateEmailRequest from "./UpdateEmailRequest";
+import updateEmailRequest from "./UpdateEmail";
 
 export default function EmailForm({ email }: { email: string }) {
   const [newEmail, setNewEmail] = useState(email);

@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginRequest from "./LoginRequest";
+import loginRequest from "./Login";
 
 
 export default function Login() {
