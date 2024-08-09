@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
-import updatePasswordRequest from "./UpdatePasswordRequest";
+import updatePasswordRequest from "./UpdatePassword";
 
 export default function PasswordForm() {
   const [password, setPassword] = useState({

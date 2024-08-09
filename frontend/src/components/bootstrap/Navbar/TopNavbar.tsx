@@ -32,7 +32,7 @@ function TopNavbar() {
                     >
                         <Tab eventKey="dashboard" title="Calendar">
                         </Tab>
-                        <Tab eventKey="requests" title="My requests">
+                        <Tab eventKey="myrequests" title="My requests">
                         </Tab>
                         <Tab eventKey="profile" title="Profile">
                         </Tab>

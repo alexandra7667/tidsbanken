@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import EmailForm from "./UpdateEmail/EmailForm";
 import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
-import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx";
+import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx"
 import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 
 export default function Profile() {

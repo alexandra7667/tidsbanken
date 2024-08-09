@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import deleteAccountRequest from "./DeleteAccountRequest";
+import deleteAccountRequest from "./DeleteAccount";
 import { useNavigate } from "react-router-dom";
 
 export default function DeleteAccount() {
