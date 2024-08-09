@@ -1,12 +1,10 @@
 import { backendUrl } from "../../../assets/strings/backendUrl";
-import { NavigateFunction } from "react-router-dom";
 
 export default async function updatePasswordRequest(
   password: {
     oldPassword: string;
     newPassword: string;
-  },
-  navigate: NavigateFunction
+  }
 ) {
   // const token = localStorage.getItem('token'):
   // const headers = {
