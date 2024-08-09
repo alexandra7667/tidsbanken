@@ -5,12 +5,10 @@
 
 import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import EmailForm from "./Forms/EmailForm";
-import PasswordForm from "./Forms/PasswordForm";
+import EmailForm from "./UpdateEmail/EmailForm";
+import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
 import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx";
-import Picture from "./Picture/Picture.tsx";
-import "./Profile.css";
-import ChoosePicture from "./Picture/ChoosePicture.tsx";
+import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 
 export default function Profile() {
   const [userData, setUserData] = useState({
@@ -26,7 +24,7 @@ export default function Profile() {
       <Container>
         <Row className="justify-content-center mt-4">
           <Col xs="auto">
-            <Picture image={image} />
+            {image && <img src={image as string} style={{ width: "100px" }} />}
           </Col>
         </Row>
 
