@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  backend.api:
+    image: backend-api
+    build:
+      context: .
+      dockerfile: /Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - backendapi-network
+    depends_on:
+      backend.database:
+        condition: service_healthy
+  backend.database:
+    container_name: "backend.database" # host url for my postgres db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5433
+    networks:
+      - backendapi-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  backendapi-network:
+    driver: bridge
