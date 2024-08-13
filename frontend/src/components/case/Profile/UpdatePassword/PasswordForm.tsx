@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
-import updatePasswordRequest from "./UpdatePassword";
+import updatePassword from "./UpdatePassword";
 
 export default function PasswordForm() {
   const [password, setPassword] = useState({
@@ -24,7 +24,7 @@ export default function PasswordForm() {
       e.stopPropagation();
     } else {
       console.log("Profile form password data: ", password);
-      updatePasswordRequest(password);
+      updatePassword(password);
     }
 
     //Show valid/invalid feedback

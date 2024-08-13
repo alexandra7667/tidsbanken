@@ -85,7 +85,7 @@ export default function Dashboard() {
             <Button variant="outline-secondary" style={{ display: 'flex' }} onClick={previousMonth}><CaretLeftFill /></Button>
           </Col>
           <Col xs="auto" className="px-1">
-            <DropdownButton size="lg" id="dropdown-month" title={selectedMonth}>
+            <DropdownButton variant="outline-primary" size="lg" id="dropdown-month" title={selectedMonth}>
               {monthNames.map((monthName, index) => (
                 <Dropdown.Item key={index} onClick={() => handleSelect(monthName)}>
                   {monthName}

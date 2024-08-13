@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
-import updateEmailRequest from "./UpdateEmail";
+import updateEmail from "./UpdateEmail";
 
 export default function EmailForm({ email }: { email: string }) {
   const [newEmail, setNewEmail] = useState(email);
@@ -18,7 +18,7 @@ export default function EmailForm({ email }: { email: string }) {
       e.stopPropagation();
     } else {
       console.log("Profile form email data: ", newEmail);
-      updateEmailRequest(newEmail);
+      updateEmail(newEmail);
     }
 
     //Show valid/invalid feedback

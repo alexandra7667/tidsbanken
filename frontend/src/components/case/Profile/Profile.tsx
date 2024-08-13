@@ -1,13 +1,9 @@
-// • Change email address.
-// • Change profile picture.
-// • Change password.
-// • Add 2FA1
 
 import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import EmailForm from "./UpdateEmail/EmailForm";
 import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
-import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx"
+import DeleteAccount from "./DeleteAccount/DeleteAccount"
 import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 
 export default function Profile() {
@@ -17,7 +13,7 @@ export default function Profile() {
     profilePic: "",
   });
 
-  const [image, setImage] = useState<string | ArrayBuffer | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   return (
     <>

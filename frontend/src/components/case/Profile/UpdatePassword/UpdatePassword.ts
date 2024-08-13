@@ -1,6 +1,6 @@
 import { backendUrl } from "../../../../assets/strings/backendUrl";
 
-export default async function updatePasswordRequest(
+export default async function updatePassword(
   password: {
     oldPassword: string;
     newPassword: string;
