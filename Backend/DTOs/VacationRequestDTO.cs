@@ -2,7 +2,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Backend.Data;
 using Backend.Models;
 using Backend.Enums;
-namespace Backend.DTOs{
+namespace Backend.DTOs
+
+{
 public class VacationRequestDTO
     {
         public int Id { get; set; }

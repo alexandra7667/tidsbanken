@@ -10,29 +10,85 @@ namespace backend.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        public Task<User?> GetUserById(int Userid)
-        {
-            throw new NotImplementedException();
+        private DatabaseContext _databaseContext;
+
+        public UserRepository(DatabaseContext databaseContext){
+            _databaseContext = databaseContext;
         }
 
-        public Task<User?> AuthenticateUser(LoginPayload loginPayload)
+        public Task<User?> GetUserById(int UserId)
         {
-            throw new NotImplementedException();
+            var user = await _databaseContext.Users.FirstOrDefaultAsync(user => user.Id == UserId);
+
+            return user;
         }
 
-        public Task<User?> AddUser(User user)
+        public Task<User?> AuthenticateUser(LoginPayload loginRequest)
         {
-            throw new NotImplementedException();
+            var user = await _databaseContext.Users.FirstOrDefaultAsync(user => user.Email == loginRequest.Email);
+
+            if(!user || user.Password != loginRequest.Password) {
+                //User does not exist or Wrong email or password
+            }
+
+            return user;
+        }
+
+        public Task<User?> AddUser(AddUserPayload payload)
+        {
+            DateTime ca = DateTime.UtcNow;
+
+            var user = new User
+            {
+                Name = payload.Name;
+                Password = payload.Password;
+                Email = payload.Email;
+                CreatedAt = ca;
+                UpdatedAt = ca;
+            };
+
+            return user;
         }
 
         public Task<IEnumerable<User>?> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var users = await _databaseContext.Users.ToListAsync();
+
+            return users;
         }
 
-        public Task<bool> DeleteUser(int Userid)
+        public Task<boolean> DeleteUser(int UserId)
         {
-            throw new NotImplementedException();
+            var user = await _databaseContext.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            _databaseContext.Users.Remove(user);
+
+            await _databaseContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public Task<User?> UpdatePassword(User user, string newPassword)
+        {
+            user.Password = newPassword;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return user;
+        }
+
+        public Task<User?> UpdateEmail(User user, string newEmail);
+        {
+            user.Email = newEmail;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return user;
         }
     }
 }

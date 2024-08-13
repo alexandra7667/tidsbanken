@@ -26,14 +26,16 @@ namespace Backend.Controllers
 
         public static async Task<IResult> getRequestById([FromServices] IVacationRequestRepository requestRepository, int id)
         {
-            VacationRequest? requests = await requestRepository.GetRequestById(id);
+            VacationRequest? request = await requestRepository.GetRequestById(id);
 
-            if (requests == null)
+            if (request == null)
             {
-                return TypedResults.NotFound("Requests not found.");
+                return TypedResults.NotFound("Request not found.");
             }
 
-            return TypedResults.Ok(requests);
+            VacationRequestDTO vacationRequestDTO = new VacationRequestDTO(request); 
+
+            return TypedResults.Ok(vacationRequestDTO);
         }
 
         public static async Task<IResult> getRequests([FromServices] IVacationRequestRepository requestRepository)
@@ -45,7 +47,10 @@ namespace Backend.Controllers
                 return TypedResults.NotFound("Requests not found.");
             }
 
-            return TypedResults.Ok(requests);
+            //Turn list of model objects into list of DTOs
+            List<VacationRequestDTO> vacationRequestDTOs = requests.Select(vacationRequest => new VacationRequest(vacationRequest)).ToList();
+
+            return TypedResults.Ok(vacationRequestDTOs);
         }
 
         public static async Task<IResult> approveRequest([FromServices] IVacationRequestRepository requestRepository, int id)
