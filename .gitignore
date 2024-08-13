@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 /Migrations
 /appsettings.json
 /appsettings.Development.json
+
+# Tillagt av Alex
+obj/*
