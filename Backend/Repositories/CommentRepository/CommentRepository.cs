@@ -4,12 +4,12 @@ using Backend.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Backend.Payloads;
 namespace backend.Repositories
 {
     public class commentRepository : ICommentRepository
     {
-        public Task<Comment> AddComment(Comment comment)
+        public Task<Comment> AddComment(AddCommentPayload comment)
         {
             throw new NotImplementedException();
         }

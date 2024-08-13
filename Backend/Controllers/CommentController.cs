@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Repositories;
 using System.Threading.Tasks;
-
+using Backend.Payloads;
 namespace Backend.Controllers
 {
     public static class CommentApi
@@ -14,7 +14,7 @@ namespace Backend.Controllers
             commentGroup.MapGet("/{id}", getCommentById);
         }
 
-        public static async Task<IResult> addComment([FromServices] ICommentRepository commentRepository, [FromBody] Comment comment)
+        public static async Task<IResult> addComment([FromServices] ICommentRepository commentRepository, [FromBody] AddCommentPayload comment)
         {
             // Add logic to add a comment
             await commentRepository.AddComment(comment);

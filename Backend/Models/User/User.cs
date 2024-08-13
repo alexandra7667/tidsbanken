@@ -1,5 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Backend.Data;
+using Backend.Enums;
 
 namespace Backend.Models
 {
@@ -22,8 +24,8 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
-        [Column("role")] {get; set; }
-        public string Role;
+        [Column("role")]
+        public string Role  {get; set; }
 
         public List<Comment> Comments { get; set; }
         public List<VacationRequest> VacationRequests { get; set; }

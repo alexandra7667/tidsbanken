@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Models;
 using Backend.Repositories;
 using System.Threading.Tasks;
-
+using Backend.Payloads;
 namespace Backend.Controllers
 {
     public static class VacationRequestApi
@@ -17,7 +17,7 @@ namespace Backend.Controllers
             requestGroup.MapDelete("/{id}/approve", approveRequest);
         }
 
-        public static async Task<IResult> createRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] VacationRequest request)
+        public static async Task<IResult> createRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] AddVacationRequestPayload request)
         {
             // Add logic to create a vacation request
             await requestRepository.AddRequest(request);

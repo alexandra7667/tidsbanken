@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Backend.Data;
-
+using Backend.Models;
 namespace Backend.DTOs
-
-public class CommentDTO
+{
+    public class CommentDTO
     {
         public int Id { get; set; }
         public string Content { get; set; }
@@ -19,3 +19,5 @@ public class CommentDTO
             UserId = comment.UserId;
         }
     }
+}
+
