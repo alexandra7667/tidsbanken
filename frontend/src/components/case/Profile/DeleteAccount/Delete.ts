@@ -1,7 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
 import { backendUrl } from "../../../assets/strings/backendUrl";
 
-export default async function deleteAccountRequest(navigate: NavigateFunction) {
+export default async function deleteThisAccount(navigate: NavigateFunction) {
   // const token = localStorage.getItem('token'):
   // const headers = {
   //   "Content-Type": "application/json",

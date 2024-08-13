@@ -3,6 +3,7 @@ import Login from "../Login/Login.tsx";
 import Dashboard from "../Dashboard/Dashboard";
 import Profile from "../Profile/Profile";
 import RequestHistory from "../RequestHistory/RequestHistory";
+import RequestView from "../RequestView/RequestView.tsx";
 
 export default function Main() {
   return (
@@ -11,7 +12,8 @@ export default function Main() {
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/myrequests" element={<RequestHistory />} />
+        <Route path="/requesthistory/:userId" element={<RequestHistory />} />
+        <Route path="/requestview/:requestId" element={<RequestView />} />
       </Routes>
     </>
   );

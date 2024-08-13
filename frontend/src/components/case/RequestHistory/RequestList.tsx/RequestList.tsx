@@ -5,21 +5,25 @@ import RequestItem from "./RequestItem";
 interface Request {
   id: number;
   name: string;
+  status: string;
   //etc....
 }
 
 interface RequestListProps {
   requests: Request[];
+  hasFullView: boolean;
 }
 
-export default function RequestList({ requests }: RequestListProps) {
+export default function RequestList({ requests, hasFullView }: RequestListProps) {
   return (
     <>
       {requests
         .slice()
         .reverse()
         .map((request: Request, index: number) => (
-          <RequestItem key={index} request={request} />
+          (request.status === 'approved' || hasFullView) && (
+            <RequestItem key={index} request={request} />
+          )
         ))}
     </>
   );
