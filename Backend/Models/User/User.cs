@@ -22,6 +22,8 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
+        [Column("role")] {get; set; }
+        public string Role;
 
         public List<Comment> Comments { get; set; }
         public List<VacationRequest> VacationRequests { get; set; }
