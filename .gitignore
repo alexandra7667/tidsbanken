@@ -483,5 +483,11 @@ $RECYCLE.BIN/
 /appsettings.json
 /appsettings.Development.json
 
+# Ignore all .AssemblyInfo... files
+*.AssemblyInfo*
+
+# Ignore everything in obj directories
+obj/
+
 # Tillagt av Alex
 obj/*
