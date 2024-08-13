@@ -30,7 +30,9 @@ namespace Backend.Controllers
                 return TypedResults.NotFound("Comment not found.");
             }
 
-            return TypedResults.Ok(comment);
+            CommentDTO commentDTO = new CommentDTO(comment);
+
+            return TypedResults.Ok(commentDTO);
         }
     }
 }

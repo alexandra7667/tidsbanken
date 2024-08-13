@@ -4,11 +4,12 @@ namespace Backend.Repositories
 {
     public interface IUserRepository
     {
-        public Task<User?> GetUserById(int Userid);
-        public Task<User?> AddUser(User user);
+        public Task<User?> GetUserById(int UserId);
+        public Task<User?> AddUser(AddUserPayload payload); //aka RegisterUser
+        public Task<User?> AuthenticateUser(LoginPayload loginRequest); //aka Login from LoginController
         public Task<IEnumerable<User>?> GetAllUsers();
-        public Task<bool> DeleteUser(int Userid);
-
-        public Task<User?> AuthenticateUser(LoginPayload loginRequest);
+        public Task<boolean> DeleteUser(int UserId);
+        public Task<User?> UpdatePassword(User user, string newPassword);
+        public Task<User?> UpdateEmail(User user, string newEmail);
     }
 }

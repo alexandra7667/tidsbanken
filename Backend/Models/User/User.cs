@@ -18,14 +18,12 @@ namespace Backend.Models
         public string Email { get; set; }
         [Column("profile_picture")]
         public string ProfilePicture { get; set; }
-        [Column("phone")]
-        public int Phone { get; set; }
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
         [Column("role")]
-        public string Role  {get; set; }
+        public Role role { get; set; } = Role.USER;
 
         public List<Comment> Comments { get; set; }
         public List<VacationRequest> VacationRequests { get; set; }
