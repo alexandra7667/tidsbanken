@@ -12,9 +12,9 @@ namespace Backend.Controllers
             var authGroup = app.MapGroup("ineligible");
             authGroup.MapGet("/", getAllIneligibles);
             authGroup.MapPost("/", createIneligible);
-            authGroup.MapGet("/{periodId}", getIneligibleById);
-            authGroup.MapPatch("/{periodId}", updateIneligible);
-            authGroup.MapDelete("/{periodId}", deleteIneligible);
+            authGroup.MapGet("/{ipId}", getIneligibleById);
+            authGroup.MapPatch("/{ipId}", updateIneligible);
+            authGroup.MapDelete("/{ipId}", deleteIneligible);
         }
 
         public static async Task<IResult> getAllIneligibles([FromServices] IIneligibleRepository ineligibleRepository)
@@ -36,13 +36,13 @@ namespace Backend.Controllers
             return TypedResults.Ok();
         }
 
-        public static async Task<IResult> getIneligibleById([FromServices] IIneligibleRepository ineligibleRepository)
+        public static async Task<IResult> getIneligibleById([FromServices] IIneligibleRepository ineligibleRepository, int ipId)
         {
             
             return TypedResults.Ok();
         }
 
-        public static async Task<IResult> updateIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] UpdateIneligiblePeriodPayload payload, ClaimsPrincipal user)
+        public static async Task<IResult> updateIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] UpdateIneligiblePeriodPayload payload, ClaimsPrincipal user, int ipId)
         {
             //Admin only
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
@@ -55,7 +55,7 @@ namespace Backend.Controllers
             return TypedResults.Ok();
         }
 
-        public static async Task<IResult> deleteIneligible([FromServices] IIneligibleRepository ineligibleRepository, ClaimsPrincipal user)
+        public static async Task<IResult> deleteIneligible([FromServices] IIneligibleRepository ineligibleRepository, ClaimsPrincipal user, int ipId)
         {
             //Admin only
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;

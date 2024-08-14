@@ -9,34 +9,65 @@ namespace backend.Repositories
 {
     public class ineligibleRepository : IIneligibleRepository
     {
+        private DatabaseContext _databaseContext;
+
+        public IneligibleRepository(DatabaseContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
+
         public Task<IEnumerable<IneligiblePeriod>?> GetAllIneligibles();
         {
-            throw new NotImplementedException();
+            return await _databaseContext.IneligiblePeriods.ToListAsync();
         }
 
         public Task<IneligiblePeriod> AddIneligible(AddIneligiblePayload payload);
         {
-            throw new NotImplementedException();
+            DateTime ca = DateTime.UtcNow;
+
+            var ineligiblePeriod = new IneligiblePeriod
+            {
+                StartDate = payload.StartDate;
+                EndDate = payload.EndDate;
+                CreatedAt = ca;
+                UpdatedAt = ca;
+            };
+
+            await _databaseContext.IneligiblePeriods.AddAsync(ineligiblePeriod);
+
+            await _databaseContext.SaveChangesAsync();
+
+            return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> GetIneligibleById(int periodId);
+        public Task<IneligiblePeriod?> GetIneligibleById(int ipId);
         {
-            throw new NotImplementedException();
+            var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FirstOrDefaultAsync(ip => ip.Id == ipId);
+
+            return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> UpdateIneligible(int periodId, UpdateIneligiblePayload payload);
+        public Task<IneligiblePeriod?> UpdateIneligible(UpdateIneligiblePayload payload, int ipId);
         {
-            throw new NotImplementedException();
+            var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
+
+            ineligiblePeriod.StartDate = payload.StartDate;
+            ineligiblePeriod.EndDate = payload.EndDate;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> DeleteIneligible(int periodId);
+        public Task<IneligiblePeriod?> DeleteIneligible(int ipId);
         {
-            throw new NotImplementedException();
-        }
+            var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
 
-        public Task<IneligiblePeriod?> SetMaxVacationDays(SettingsPayload payload);
-        {
-            throw new NotImplementedException();
+            _databaseContext.IneligiblePeriods.Remove(ineligiblePeriod);
+
+            await _databaseContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

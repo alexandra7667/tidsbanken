@@ -37,6 +37,10 @@ namespace backend.Repositories
                 UpdatedAt = ca;
             };
 
+            await _databaseContext.Comments.AddAsync(comment);
+
+            await _databaseContext.SaveChangesAsync();
+
             return comment;
         }
 
