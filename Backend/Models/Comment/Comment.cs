@@ -18,6 +18,9 @@ namespace Backend.Models
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; }
+
         [Column("vacation_request_id")]
         public int VacationRequestId { get; set; }
         public VacationRequest VacationRequest { get; set; }

@@ -7,10 +7,11 @@ namespace Backend.Repositories
 {
     public interface IVacationRequestRepository
     {
-        Task<VacationRequest?> GetRequestById(int id);
         Task<IEnumerable<VacationRequest>> GetAllRequests();
         Task<VacationRequest> AddRequest(AddVacationRequestPayload request);
-        Task<bool> ApproveRequest(int id);
-        Task<bool> DeleteRequest(int id);
+        Task<VacationRequest?> GetRequestById(int requestId);
+        Task<VacationRequest?> ApproveRequest(UpdateRequestPayload payload, int requestId);
+        Task<VacationRequest?> UpdateRequest(UpdateRequestPayload payload, int requestId);
+        Task<bool> DeleteRequest(int requestId);
     }
 }

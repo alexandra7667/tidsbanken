@@ -38,9 +38,11 @@ app.UseSwaggerUI();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.ConfigureUserApi();
-app.ConfigureAdminApi();
-app.ConfigureCommentApi();
+app.ConfigureLoginApi();
 app.ConfigureVacationRequestApi();
+app.ConfigureCommentApi();
+app.ConfigureSettingsApi();
+app.ConfigureIneligibleApi();
 //app.ApplyProjectMigrations();
 app.Run();
 
