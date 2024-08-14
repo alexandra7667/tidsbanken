@@ -8,18 +8,18 @@ namespace Backend.Repositories
 {
     public class VacationRequestRepository : IVacationRequestRepository
     {
-        private readonly Context _context;
+        private DatabaseContext _databaseContext;
         private readonly IUserRepository _userRepository;
 
-        public VacationRequestRepository(Context context, IUserRepository userRepository)
+        public VacationRequestRepository(DatabaseContext databaseContext, IUserRepository userRepository)
         {
-            _context = context;
+            _databaseContext = databaseContext;
             _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<VacationRequest>> GetAllRequests()
         {
-            return await _context.VacationRequests.ToListAsync();
+            return await _databaseContext.VacationRequests.ToListAsync();
         }
 
         public async Task<VacationRequest> AddRequest(AddVacationRequestPayload payload)
@@ -44,21 +44,21 @@ namespace Backend.Repositories
                 IsApproved = Enums.VacationRequestState.PENDING,
             };
 
-            await _context.VacationRequests.AddAsync(request);
+            await _databaseContext.VacationRequests.AddAsync(request);
 
-            await _context.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
 
             return request;
         }
 
         public async Task<VacationRequest?> GetRequestById(int requestId)
         {
-            return await _context.VacationRequests.FindAsync(requestId);
+            return await _databaseContext.VacationRequests.FindAsync(requestId);
         }
 
         public async Task<bool> ApproveRequest(UpdateRequestPayload payload, int requestId)
         {
-            var request = await _context.VacationRequests.FindAsync(requestId);
+            var request = await _databaseContext.VacationRequests.FindAsync(requestId);
 
             if (request == null)
             {
@@ -67,16 +67,16 @@ namespace Backend.Repositories
 
             request.IsApproved = payload.Approved ? Enums.VacationRequestState.APPROVED : Enums.VacationRequestState.DENIED;
 
-            _context.VacationRequests.Update(request);
+            _databaseContext.VacationRequests.Update(request);
 
-            await _context.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<bool> UpdateRequest(UpdateRequestPayload payload, int requestId)
         {
-            var request = await _context.VacationRequests.FindAsync(requestId);
+            var request = await _databaseContext.VacationRequests.FindAsync(requestId);
 
             if (request == null)
             {
@@ -86,25 +86,25 @@ namespace Backend.Repositories
             request.StartDate = payload.StartDate;
             request.EndDate = payload.EndDate;
 
-            _context.VacationRequests.Update(request);
+            _databaseContext.VacationRequests.Update(request);
 
-            await _context.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<bool> DeleteRequest(int requestId)
         {
-            var request = await _context.VacationRequests.FindAsync(requestId);
+            var request = await _databaseContext.VacationRequests.FindAsync(requestId);
 
             if (request == null)
             {
                 return false;
             }
 
-            _context.VacationRequests.Remove(request);
+            _databaseContext.VacationRequests.Remove(request);
             
-            await _context.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync();
 
             return true;
         }

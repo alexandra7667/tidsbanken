@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Backend.Enums;
 namespace Backend.Models
 {    
-    [Table("vacation_request")]
+    [Table("vacation_requests")]
     public class VacationRequest
     {
         [Column("id")]

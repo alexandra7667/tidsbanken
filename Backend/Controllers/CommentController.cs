@@ -11,18 +11,21 @@ namespace Backend.Controllers
         public static void ConfigureCommentApi(this WebApplication app)
         {
             var requestGroup = app.MapGroup("comment"); //Should be request (specified in case description) but for ease separated into its own controller
-            requestGroup.MapGet("/{requestId}/comment", getAllComments); //Comments for a request may only be viewed by an Administrator or the request owner
-            requestGroup.MapPost("/{requestId}/comment", createComment); //Only Administrators and the request owner may create comments on a particular request.
-            requestGroup.MapGet("/{requestId}/comment/{commentId}", getCommentById); //Comments for a request may only be viewed by an Administrator or the request owner
-            requestGroup.MapPatch("/{requestId}/comment/{commentId}", updateComment); //Comments may only be edited by the comment author and only within the first 24hours since created.
-            requestGroup.MapDelete("/{requestId}/comment/{commentId}", deleteComment); //Within the first 24 hours after having made the comment, the comment author may delete their own comments.
+            requestGroup.MapGet("/{requestId}/comment", getAllComments);
+            requestGroup.MapPost("/{requestId}/comment", createComment);
+            requestGroup.MapGet("/{requestId}/comment/{commentId}", getCommentById);
+            requestGroup.MapPatch("/{requestId}/comment/{commentId}", updateComment);
+            requestGroup.MapDelete("/{requestId}/comment/{commentId}", deleteComment);
         }
 
         public static async Task<IResult> getAllComments(
             [FromServices] ICommentRepository commentRepository,
-            int requestId
+            int requestId,
+            ClaimsPrincipal user
         )
         {
+            //Comments for a request may only be viewed by an Administrator or the request owner
+
             IEnumerable<Comment>? allComments = await commentRepository.GetAllRequests();
 
             if (allComments == null)
@@ -41,9 +44,12 @@ namespace Backend.Controllers
         public static async Task<IResult> createComment(
             [FromServices] ICommentRepository commentRepository,
             [FromBody] AddCommentPayload payload,
-            int requestId
+            int requestId,
+            ClaimsPrincipal user
         )
         {
+            //Only Administrators and the request owner may create comments on a particular request
+
             await requestRepository.AddComment(requestId, payload);
 
             return TypedResults.Ok("Comment created successfully.");
@@ -52,9 +58,12 @@ namespace Backend.Controllers
         public static async Task<IResult> getCommentById(
             [FromServices] ICommentRepository commentRepository,
             int requestId,
-            int commentId
+            int commentId,
+            ClaimsPrincipal user
         )
         {
+            //Comments for a request may only be viewed by an Administrator or the request owner
+
             Comment? comment = await commentRepository.getCommentById(requestId, commentId);
 
             if (comment == null)
@@ -92,14 +101,8 @@ namespace Backend.Controllers
             ClaimsPrincipal user
         )
         {
-            //Within the first 24 hours after having made the comment, the comment author may
-            //delete their own comments. Administrators are subject to these same restrictions.
-            string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (userRole != "ADMIN")
-            {
-                return TypedResults.Unauthorized();
-            }
+            //Within the first 24 hours after having made the comment, the comment author may delete their own comments
+            // Administrators are subject to these same restrictions
 
             await commentRepository.DeleteComment(requestId, commentId);
 
