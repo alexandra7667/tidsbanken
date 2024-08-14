@@ -10,11 +10,26 @@ namespace Backend.Controllers
         public static void ConfigureVacationRequestApi(this WebApplication app)
         {
             var requestGroup = app.MapGroup("request");
-            requestGroup.MapPost("/create", createRequest);
-            requestGroup.MapGet("/", getRequests);
-            requestGroup.MapGet("/{id}", getRequestById);
-            requestGroup.MapPut("/{id}/approve", approveRequest);
-            requestGroup.MapDelete("/{id}/approve", approveRequest);
+            requestGroup.MapGet("/", getAllRequests);
+            requestGroup.MapPost("/", createRequest);
+            requestGroup.MapGet("/{requestId}", getRequestById);
+            requestGroup.MapPatch("/{requestId}", updateRequest);
+            requestGroup.MapDelete("/{requestId}", deleteRequest);
+        }
+
+        public static async Task<IResult> getAllRequests([FromServices] IVacationRequestRepository requestRepository)
+        {
+            IEnumerable<VacationRequest>? requests = await requestRepository.GetAllRequests();
+
+            if (requests == null)
+            {
+                return TypedResults.NotFound("Requests not found.");
+            }
+
+            //Turn list of model objects into list of DTOs
+            List<VacationRequestDTO> vacationRequestDTOs = requests.Select(vacationRequest => new VacationRequestDTO(vacationRequest)).ToList();
+
+            return TypedResults.Ok(vacationRequestDTOs);
         }
 
         public static async Task<IResult> createRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] AddVacationRequestPayload request)
@@ -24,9 +39,9 @@ namespace Backend.Controllers
             return TypedResults.Ok("Request created successfully.");
         }
 
-        public static async Task<IResult> getRequestById([FromServices] IVacationRequestRepository requestRepository, int id)
+        public static async Task<IResult> getRequestById([FromServices] IVacationRequestRepository requestRepository, int requestId)
         {
-            VacationRequest? request = await requestRepository.GetRequestById(id);
+            VacationRequest? request = await requestRepository.GetRequestById(requestId);
 
             if (request == null)
             {
@@ -38,31 +53,50 @@ namespace Backend.Controllers
             return TypedResults.Ok(vacationRequestDTO);
         }
 
-        public static async Task<IResult> getRequests([FromServices] IVacationRequestRepository requestRepository)
+        public static async Task<IResult> updateRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] UpdateRequestPayload payload, int requestId, ClaimsPrincipal user)
         {
-            IEnumerable<VacationRequest>? requests = await requestRepository.GetAllRequests();
+            //Status update can only be done by administrator
+            if (payload.approved != null) {
+                string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (requests == null)
-            {
-                return TypedResults.NotFound("Requests not found.");
+                if (userRole != "ADMIN")
+                {
+                    return TypedResults.Unauthorized();
+                }
+
+                bool isApproved = await requestRepository.ApproveRequest(requestId, payload);
+
+                if (!isApproved)
+                {
+                    return TypedResults.NotFound("Request not found or approval failed.");
+                }
+
+                //When a request is successfully moderated by an administrator, the moderator and the time of moderation should be recorded on the request object
+
+                return TypedResults.Ok(payload.approved ? "The request was approved" : "The request was denied");
             }
 
-            //Turn list of model objects into list of DTOs
-            List<VacationRequestDTO> vacationRequestDTOs = requests.Select(vacationRequest => new VacationRequest(vacationRequest)).ToList();
+            //The request owner may only make updates to the request before the request has been moderated by an administrator.
+            await requestRepository.UpdateRequest(requestId, payload);
 
-            return TypedResults.Ok(vacationRequestDTOs);
+            return TypedResults.Ok("The request was updated");
         }
 
-        public static async Task<IResult> approveRequest([FromServices] IVacationRequestRepository requestRepository, int id)
+        public static async Task<IResult> deleteRequest([FromServices] IVacationRequestRepository requestRepository, int requestId, ClaimsPrincipal user)
         {
-            // Add logic to approve a vacation request
-            bool isApproved = await requestRepository.ApproveRequest(id);
-            if (!isApproved)
+            //Can only be done by administrator
+            string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (userRole != "ADMIN")
             {
-                return TypedResults.NotFound("Request not found or approval failed.");
+                return TypedResults.Unauthorized();
             }
 
-            return TypedResults.Ok("Request approved.");
+            await requestRepository.DeleteRequest(requestId);
+
+            //Should be cascading (delete comments)
+
+            return TypedResults.Ok("The request was deleted");
         }
     }
 }

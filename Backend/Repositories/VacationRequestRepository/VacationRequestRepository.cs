@@ -15,12 +15,6 @@ namespace Backend.Repositories
         {
             _context = context;
             _userRepository = userRepository;
-
-        }
-
-        public async Task<VacationRequest?> GetRequestById(int id)
-        {
-            return await _context.VacationRequests.FindAsync(id);
         }
 
         public async Task<IEnumerable<VacationRequest>> GetAllRequests()
@@ -30,7 +24,7 @@ namespace Backend.Repositories
 
         public async Task<VacationRequest> AddRequest(AddVacationRequestPayload payload)
         {
-            if(_userRepository.GetUserById(payload.UserId) == null)
+            if (_userRepository.GetUserById(payload.UserId) == null)
             {
                 return null;
             }
@@ -51,35 +45,67 @@ namespace Backend.Repositories
             };
 
             await _context.VacationRequests.AddAsync(request);
+
             await _context.SaveChangesAsync();
 
             return request;
         }
 
-        public async Task<bool> ApproveRequest(int id)
+        public async Task<VacationRequest?> GetRequestById(int requestId)
         {
-            var request = await _context.VacationRequests.FindAsync(id);
+            return await _context.VacationRequests.FindAsync(requestId);
+        }
+
+        public async Task<bool> ApproveRequest(UpdateRequestPayload payload, int requestId)
+        {
+            var request = await _context.VacationRequests.FindAsync(requestId);
+
             if (request == null)
             {
                 return false;
             }
 
-            request.IsApproved = Enums.VacationRequestState.APPROVED;
+            request.IsApproved = payload.Approved ? Enums.VacationRequestState.APPROVED : Enums.VacationRequestState.DENIED;
+
             _context.VacationRequests.Update(request);
+
             await _context.SaveChangesAsync();
+
             return true;
         }
 
-        public async Task<bool> DeleteRequest(int id)
+        public async Task<bool> UpdateRequest(UpdateRequestPayload payload, int requestId)
         {
-            var request = await _context.VacationRequests.FindAsync(id);
+            var request = await _context.VacationRequests.FindAsync(requestId);
+
+            if (request == null)
+            {
+                return false;
+            }
+
+            request.StartDate = payload.StartDate;
+            request.EndDate = payload.EndDate;
+
+            _context.VacationRequests.Update(request);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteRequest(int requestId)
+        {
+            var request = await _context.VacationRequests.FindAsync(requestId);
+
             if (request == null)
             {
                 return false;
             }
 
             _context.VacationRequests.Remove(request);
+            
             await _context.SaveChangesAsync();
+
             return true;
         }
     }

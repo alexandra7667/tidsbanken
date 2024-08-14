@@ -44,7 +44,7 @@ export default function UpdateRequest({ request, modalOpen, setModalOpen }: Upda
             <Form.Control
               type="text"
               name="title"
-              value={title}
+              value={updatedFields.title}
               onChange={handleChange}
             />
           </Form.Group>
@@ -54,7 +54,7 @@ export default function UpdateRequest({ request, modalOpen, setModalOpen }: Upda
             <Form.Control
               type="date"
               name="startDate"
-              value={startDate}
+              value={updatedFields.startDate}
               onChange={handleChange}
             />
           </Form.Group>
@@ -64,7 +64,7 @@ export default function UpdateRequest({ request, modalOpen, setModalOpen }: Upda
             <Form.Control
               type="date"
               name="endDate"
-              value={endDate}
+              value={updatedFields.endDate}
               onChange={handleChange}
             />
           </Form.Group>

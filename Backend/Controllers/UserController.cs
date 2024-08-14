@@ -19,7 +19,7 @@ namespace Backend.Controllers
             authGroup.MapPost("/id/update_password", updatePassword);
         }
 
-        public static async Task<IResult> getUser([FromServices] IUserRepository userRepository, [FromBody] ClaimsPrincipal user)
+        public static async Task<IResult> getUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user)
         {
             //Ska bara kolla vad det här är
             foreach (Claim claim in user.Claims) {
