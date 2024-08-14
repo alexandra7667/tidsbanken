@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import getRequestHistory from "./GetRequestHistory";
-import RequestList from "./RequestList.tsx/RequestList";
+import RequestList from "./RequestList/RequestList";
 import LoadingSpinner from "../../bootstrap/Spinner/LoadingSpinner";
 import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-
-//Definiera Request
-interface Request {
-  id: number;
-  name: string;
-  //etc....
-}
+import Request from "../Interfaces/Request";
 
 export default function RequestHistory() {
-  const { userId } = useParams<{ requestId: string }>();
+  //const { userId } = useParams<{ requestId: string }>();
+  const userId = 1;
+  const user = {id: 1, role: "admin"}
   const [requestHistory, setRequestHistory] = useState<Request[]>([]);
   const [hasFullView, setHasFullView] = useState(false);
 

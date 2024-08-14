@@ -28,7 +28,7 @@ export default function EmailForm({ email }: { email: string }) {
   return (
     <Form noValidate validated={emailValidated} onSubmit={handleEmailSubmit}>
       <Form.Group className="mb-3" controlId="formEmail">
-        <Form.Label>Email</Form.Label>
+        <Form.Label className="fw-bold my-3">Update your email</Form.Label>
         <Form.Control
           required
           type="email"

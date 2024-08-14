@@ -1,13 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
 import { backendUrl } from "../../../../assets/strings/backendUrl";
+import Request from "../Interfaces/Request";
 
-//Definiera Request 
-interface Request {
-  id: number;
-  name: string;
-  //etc....
-}
 
-export default async function getRequestHistory(setRequestHistory: (data: Request[]) => void) {
+export default async function getRequestHistory(setRequestHistory: Dispatch<SetStateAction<Request[]>>) {
   // const token = localStorage.getItem('token'):
   // const headers = {
   //   "Content-Type": "application/json",

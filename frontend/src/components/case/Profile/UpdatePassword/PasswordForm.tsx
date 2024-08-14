@@ -38,7 +38,7 @@ export default function PasswordForm() {
       onSubmit={handlePasswordSubmit}
     >
       <Form.Group className="mb-3" controlId="formOldPassword">
-        <Form.Label>Enter your password</Form.Label>
+        <Form.Label className="fw-bold my-3">Update your password</Form.Label>
         <Form.Control
           required
           type="password"
@@ -54,7 +54,6 @@ export default function PasswordForm() {
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formNewPassword">
-        <Form.Label>Enter new password</Form.Label>
         <Form.Control
           required
           type="password"

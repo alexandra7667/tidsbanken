@@ -1,7 +1,7 @@
 import { backendUrl } from "../../../assets/strings/backendUrl";
 import { NavigateFunction } from "react-router-dom";
 
-export default async function loginRequest(
+export default async function loginUser(
   loginData: {
     username: string;
     password: string;

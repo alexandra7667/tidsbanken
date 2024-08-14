@@ -491,3 +491,6 @@ obj/
 
 # Tillagt av Alex
 obj/*
+
+# Hide database credentials
+appsettings.json
