@@ -18,14 +18,14 @@ namespace backend.Repositories
 
         public Task<User?> GetUserById(int UserId)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(user => user.Id == UserId);
+            var user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Id == UserId);
 
             return user;
         }
 
         public Task<User?> AuthenticateUser(LoginPayload loginRequest)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(user => user.Email == loginRequest.Email);
+            var user = await _databaseContext.Users.FirstOrDefaultAsync(u => user.Email == loginRequest.Email);
 
             if(!user || user.Password != loginRequest.Password) {
                 //User does not exist or Wrong email or password

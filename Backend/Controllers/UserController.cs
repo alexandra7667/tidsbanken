@@ -23,14 +23,16 @@ namespace Backend.Controllers
         {
             //Ska bara kolla vad det här är
             foreach (Claim claim in user.Claims) {
-                Response.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
+                Console.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
             }
 
             //Returns 303 See Other with the location header set to the URL of the currently authenticated user’s profile
             //Replace JSON request body ClaimsPrincipal user (JWT) with cookie 
 
-            string userId = user.UserId();
+            string userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.Write("user id: " + userId)
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
+            Console.Write("user role: " + userRole)
 
             if (userRole != "ADMIN")
             {
@@ -42,9 +44,10 @@ namespace Backend.Controllers
             return Results.Redirect(locationUrl, permanent: false, statusCode: 303);
         }
 
-        public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, [FromBody] AddUserPayload payload, int adminId)
+        public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user, [FromBody] AddUserPayload payload)
         {
             //Only admin can register a new user
+            string adminId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             User? user = await userRepository.GetUserById(adminId);
 
             if(user == null) {

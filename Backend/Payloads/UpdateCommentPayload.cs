@@ -1,5 +1,4 @@
-
 namespace Backend.Payloads
 {
-    public record UpdateCommentPayload(string comment);
+    public record UpdateCommentPayload(string Content);
 }
