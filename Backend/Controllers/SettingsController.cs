@@ -13,7 +13,7 @@ namespace Backend.Controllers
             authGroup.MapPost("/", settings);
         }
 
-        public static async Task<IResult> settings([FromServices] IIneligibleRepository ineligibleRepository, ClaimsPrincipal user, [FromBody] SettingsPayload payload)
+        public static async Task<IResult> settings([FromServices] ISettingsRepository settingsRepository, ClaimsPrincipal user, [FromBody] SettingsPayload payload)
         {
             //Admin only
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
@@ -23,10 +23,8 @@ namespace Backend.Controllers
                 return TypedResults.Unauthorized();
             }
 
-            //Specify the maximum period of time any single vacation may be (in days).
-            
-            //Specify in Ineligible repository
-            await ineligibleRepository.SetMaxVacationDays(payload);
+            //Specify the maximum period of time any single vacation may be (in days)
+            await settingsRepository.SetMaxVacationDays(payload);
 
             return TypedResults.Ok();
         }
