@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginRequest from "./Login";
+import loginUser from "./LoginUser";
 
 
 export default function Login() {
@@ -27,7 +27,7 @@ export default function Login() {
     } 
     else {
       console.log("Login form data: ", loginData);
-      loginRequest(loginData, navigate);
+      loginUser(loginData, navigate);
     }
 
     //Show valid/invalid feedback

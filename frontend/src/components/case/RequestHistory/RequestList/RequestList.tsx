@@ -1,13 +1,5 @@
-
+import Request from "../../Interfaces/Request";
 import RequestItem from "./RequestItem";
-
-//Definiera Request
-interface Request {
-  id: number;
-  name: string;
-  status: string;
-  //etc....
-}
 
 interface RequestListProps {
   requests: Request[];

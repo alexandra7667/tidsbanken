@@ -17,7 +17,8 @@ export default function Header() {
 
     const handleSelect = (k: string | null) => {
         setKey(k);
-        if (k === 'requesthistory') navigate(`/requesthistory/${user.id}`);
+        //if (k === 'requesthistory') navigate(`/requesthistory/${user.id}`);
+        if (k === 'requesthistory') navigate(`/requesthistory`);
         else navigate(`/${k}`);
     };
 
