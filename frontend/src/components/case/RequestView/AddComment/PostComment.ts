@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import { backendUrl } from "../../../../assets/strings/backendUrl";
+import Comment from "../../Interfaces/Comment";
 
-export default async function createComment(
+export default async function postComment(
   newComment: {userId: string; requestId: string; comment: string},
-  setComments: Dispatch<SetStateAction<Comment[]>>
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>,
 ) {
   // const token = localStorage.getItem('token'):
   // const headers = {

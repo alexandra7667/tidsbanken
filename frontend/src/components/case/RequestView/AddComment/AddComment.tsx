@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import createComment from "./CreateComment";
+import postComment from "./PostComment";
 import Comment from "../../Interfaces/Comment";
 
 interface AddCommentProps {
@@ -27,7 +27,7 @@ export default function AddComment({userId, requestId, setComments}: AddCommentP
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("New comment: ", newComment);
-    createComment(newComment, setComments);
+    postComment(newComment, setComments);
   };
 
   return (
