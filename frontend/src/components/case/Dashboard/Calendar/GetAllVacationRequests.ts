@@ -1,8 +1,7 @@
 import { backendUrl } from "../../../../assets/strings/backendUrl";
 
-export default async function getAllVacationRequests(
-    setMyVacationRequests, setAllApprovedRequests, userId
-) {
+
+export default async function getAllVacationRequests() {
   // const token = localStorage.getItem('token'):
   // const headers = {
   //   "Content-Type": "application/json",
@@ -19,8 +18,6 @@ export default async function getAllVacationRequests(
   // }
   // else {
   //   const response = await fetchResponse.json();
-  // Loop through all requests and set the two lists
-  // setAllApprovedRequests
-  // setMyVacationRequests
+  // return response.data;
   // }
 }

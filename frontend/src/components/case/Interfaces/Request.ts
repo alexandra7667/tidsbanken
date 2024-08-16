@@ -5,4 +5,5 @@ export default interface Request {
     status: string;
     startDate: string;
     endDate: string;
+    approved: boolean;
   }
