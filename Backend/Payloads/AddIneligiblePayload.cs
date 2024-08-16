@@ -1,4 +1,4 @@
 namespace Backend.Payloads
 {
-    public record AddIneligiblePayload(string StartDate, string EndDate);
+    public record AddIneligiblePayload(DateTime StartDate, DateTime EndDate);
 }

@@ -67,9 +67,9 @@ namespace Backend.Controllers
                     return TypedResults.Unauthorized();
                 }
 
-                bool isApproved = await requestRepository.ApproveRequest(requestId, payload);
+                VacationRequest? isApproved = await requestRepository.ApproveRequest(payload, requestId);
 
-                if (!isApproved)
+                if (isApproved == null)
                 {
                     return TypedResults.NotFound("Request not found or approval failed.");
                 }
@@ -80,7 +80,7 @@ namespace Backend.Controllers
             }
 
             //The request owner may only make updates to the request before the request has been moderated by an administrator.
-            await requestRepository.UpdateRequest(requestId, payload);
+            await requestRepository.UpdateRequest(payload, requestId);
 
             return TypedResults.Ok("The request was updated");
         }

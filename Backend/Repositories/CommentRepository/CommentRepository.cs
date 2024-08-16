@@ -5,13 +5,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace backend.Repositories
 {
-    public class commentRepository : ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
-        private DatabaseContext _databaseContext;
+        private Context _databaseContext;
 
-        public CommentRepository(DatabaseContext databaseContext){
+        public CommentRepository(Context databaseContext){
             _databaseContext = databaseContext;
         }
 
@@ -19,22 +22,22 @@ namespace backend.Repositories
         //@TODO: First find the right request and then search for comment among that request's comments OR remove int requestId from params
 
 
-        public Task<IEnumerable<Comment>?> GetAllComments(int requestId)
+        public async Task<IEnumerable<Comment>?> GetAllComments(int requestId)
         {
             return await _databaseContext.Comments.ToListAsync();
         }
 
-        public Task<Comment> AddComment(AddCommentPayload payload)
+        public async Task<Comment> AddComment(AddCommentPayload payload)
         {
             DateTime ca = DateTime.UtcNow;
 
             var comment = new Comment
             {
-                Content = payload.Content;
-                VacationRequestId = payload.VacationRequestId;
-                UserId = payload.UserId;
-                CreatedAt = ca;
-                UpdatedAt = ca;
+                Content = payload.Content,
+                VacationRequestId = payload.VacationRequestId,
+                UserId = payload.UserId,
+                CreatedAt = ca,
+                UpdatedAt = ca,
             };
 
             await _databaseContext.Comments.AddAsync(comment);
@@ -44,14 +47,14 @@ namespace backend.Repositories
             return comment;
         }
 
-        public Task<Comment?> GetCommentById(int requestId, int commentId)
+        public async Task<Comment?> GetCommentById(int requestId, int commentId)
         {
             var comment = await _databaseContext.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
 
             return comment;
         }
 
-        public Task<Comment?> UpdateComment(int requestId, int commentId, UpdateCommentPayload payload);
+        public async Task<Comment?> UpdateComment(int requestId, int commentId, UpdateCommentPayload payload)
         {
             var comment = await _databaseContext.Comments.FindAsync(commentId);
 
@@ -62,7 +65,7 @@ namespace backend.Repositories
             return comment;
         }
 
-        public Task<bool> DeleteComment(int requestId, int commentId);
+        public async Task<bool> DeleteComment(int requestId, int commentId)
         {
             var comment = await _databaseContext.Comments.FindAsync(commentId);
 
@@ -72,5 +75,6 @@ namespace backend.Repositories
 
             return true;
         }
+
     }
 }
