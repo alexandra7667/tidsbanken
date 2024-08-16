@@ -5,12 +5,19 @@ namespace Backend.Data
 {
     public class Context : DbContext
     {
+        private readonly string _dbConnectionString;
+
         public Context(DbContextOptions<Context> options) : base(options)
         {
+              var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            _dbConnectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
+            this.Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Seeder seeder = new Seeder();
+
             modelBuilder.Entity<User>()
                  .HasIndex(u => u.Name)
                  .IsUnique();
@@ -38,6 +45,8 @@ namespace Backend.Data
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId)
                 .IsRequired();
+
+            modelBuilder.Entity<User>().HasData(seeder.Users);
 
             base.OnModelCreating(modelBuilder);
         }
