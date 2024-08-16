@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Dropdown } from "react-bootstrap";
+import "./Calendar.css"
 
 interface CellProps {
   day: string;
@@ -23,18 +25,14 @@ export default function Cell({
   setEndDate,
   allUserIds,
 }: CellProps) {
-  const [reqColor, setReqColor] = useState(false);
-  const [showRequests, setShowRequests] = useState(false);
+  const [request, setRequest] = useState(false);
+  const [picked, setPicked] = useState(false);
 
   useEffect(() => {
-    setReqColor(false);
+    setRequest(false);
 
     if (allUserIds.length > 0) {
-      //All user id:s that have this day approved for vacation or the current user's request (pending/approved/denied)
-      //exampel: this cell will have a dot or something to indicate there are people who are on vacation this day.
-      //when hovering over the dot, all user id:s are visible as pop up and when you click on the user id you go to their vacation history page
-      // console.log("in cell ", day,  " user ids: ", allUserIds)
-      setReqColor(true);
+      setRequest(true);
     }
   }, [day]);
 
@@ -43,15 +41,17 @@ export default function Cell({
 
     if (day == null) return; //Clicked on empty cell
 
+    setPicked(true);
+    setTimeout(() => {
+      setPicked(false);
+    }, 200); 
+
     const date = new Date(year, month, +day);
-    // console.log(`picked date: `, date);
 
     if (startPicker && date >= endDate) {
-      // console.log("start date is more than end date: ", date);
       return;
     }
     if (!startPicker && date <= startDate) {
-      // console.log("end date is less than start date", date);
       return;
     }
 
@@ -64,30 +64,21 @@ export default function Cell({
     }
   };
 
-
   return (
     <>
-      <div
-        className={reqColor ? "reqcell" : "cell"}
-        onClick={selection}
-        onMouseEnter={() => setShowRequests(true)}
-        onMouseLeave={() => setShowRequests(false)}
-      >
+      <div className={picked ? "pickedcell" : "cell"} onClick={selection}>
         {day !== null ? day : ""}
-        {showRequests && (
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            {allUserIds.map((userId, index) => (
-              <li
-                key={index}
-                style={{
-                  cursor: "pointer",
-                }}
-                onClick={() => console.log(userId)}
-              >
-                {userId}
-              </li>
-            ))}
-          </ul>
+        {request && (
+          <Dropdown className="outlined-dropdown">
+            <Dropdown.Toggle variant="link" size="sm"></Dropdown.Toggle>
+            <Dropdown.Menu>
+              {allUserIds.map((userId, index) => (
+                <Dropdown.Item key={index} onClick={() => console.log("go to history of user id", userId)}>
+                  {userId}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         )}
       </div>
     </>

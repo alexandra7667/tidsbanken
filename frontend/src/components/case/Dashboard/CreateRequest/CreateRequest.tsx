@@ -63,7 +63,7 @@ export default function CreateRequest({
     setStartDate(new Date);
     setEndDate(new Date);
     setStartPicker(true);
-    today();
+    // today();
   };
 
   return (

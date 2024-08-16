@@ -36,7 +36,6 @@ export default function Calendar({
 
   useEffect(() => {
     createCalendarMonth(year, month, setAllDays);
-    console.log("new month")
   }, [month, year]);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function Calendar({
         getDatesBetween(request, vacationMapFiller);
       }
       setVacationMap(vacationMapFiller);
-      console.log("setting vac map", vacationMapFiller)
     }
   }, [visibleVacationRequests])
 
@@ -73,7 +71,6 @@ export default function Calendar({
       ))}
       {vacationMap.size > 0 && allDays.map((day, index) => {
         const { allUserIds } = matchDays(day, month, year, vacationMap); //All user id:s that have this day approved for vacation
-        // console.log("rendering user ids ", allUserIds)
         return (
           <Cell
             key={index}
