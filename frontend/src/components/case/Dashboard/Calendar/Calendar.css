@@ -10,7 +10,7 @@
   .cell {
     height: 100px;
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 2px;
     transition: background-color 0.1s ease-in-out;
     cursor: pointer;
   }
@@ -19,21 +19,16 @@
     height: 100px;
     border: 1px solid #ddd;
     background-color: rgb(218, 248, 223);
-    padding: 10px;
+    padding: 2px;
   }
   
   .header {
     background: #f4f4f4;
     font-weight: bold;
   }
-  
-  .outlined-dropdown {
-    background-color: rgb(232, 248, 255);
-  }
 
   .outlined-dropdown .dropdown-toggle {
-    border: 1px solid #b4b4b4;
-    border-radius: 7px;
+    background-color: rgb(226, 245, 253);
   }
   
   .outlined-dropdown .dropdown-menu {
