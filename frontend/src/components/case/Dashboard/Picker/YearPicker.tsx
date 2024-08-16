@@ -16,7 +16,7 @@ export default function YearPicker({ year, setYear }) {
       <Row className="align-items-center justify-content-center">
         <Col xs="auto" className="px-1">
           <Button
-            variant="outline-secondary"
+            variant="outlined-secondary"
             style={{ display: "flex" }}
             onClick={previousYear}
           >
@@ -28,7 +28,7 @@ export default function YearPicker({ year, setYear }) {
         </Col>
         <Col xs="auto" className="px-1">
           <Button
-            variant="outline-secondary"
+            variant="outlined-secondary"
             style={{ display: "flex" }}
             onClick={nextYear}
           >

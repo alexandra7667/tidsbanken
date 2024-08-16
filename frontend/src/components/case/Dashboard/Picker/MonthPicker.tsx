@@ -44,7 +44,7 @@ export default function MonthPicker({ month, setMonth, selectedMonth, setSelecte
       <Row className="align-items-center justify-content-center">
         <Col xs="auto" className="px-1">
           <Button
-            variant="outline-secondary"
+            variant="outlined-secondary"
             style={{ display: "flex" }}
             onClick={previousMonth}
           >
@@ -54,7 +54,7 @@ export default function MonthPicker({ month, setMonth, selectedMonth, setSelecte
         
         <Col xs="auto" className="px-1">
           <DropdownButton
-            variant="outline-primary"
+            variant="outline-dark"
             size="lg"
             id="dropdown-month"
             title={selectedMonth}
@@ -72,7 +72,7 @@ export default function MonthPicker({ month, setMonth, selectedMonth, setSelecte
 
         <Col xs="auto" className="px-1">
           <Button
-            variant="outline-secondary"
+            variant="outlined-secondary"
             style={{ display: "flex" }}
             onClick={nextMonth}
           >

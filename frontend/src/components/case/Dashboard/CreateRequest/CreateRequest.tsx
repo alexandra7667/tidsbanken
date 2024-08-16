@@ -69,7 +69,7 @@ export default function CreateRequest({
   return (
     <>
       {showDates && (
-        <div className="d-flex justify-content-center mt-2">
+        <div className="d-flex justify-content-center mt-1">
           <Button
             className="m-2"
             onClick={setStart}
@@ -90,7 +90,7 @@ export default function CreateRequest({
       )}
 
       {showCreate && (
-        <div className="d-flex justify-content-center m-4">
+        <div className="d-flex justify-content-center mb-3">
           <Button onClick={createRequest}>{type === 'vacationRequest' ? 'New vacation request' : 'Add Ineligible period'}</Button>
         </div>
       )}
