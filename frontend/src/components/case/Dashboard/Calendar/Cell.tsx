@@ -34,7 +34,7 @@ export default function Cell({
     if (allUserIds.length > 0) {
       setRequest(true);
     }
-  }, [day]);
+  }, [day, month]);
 
   const selection = () => {
     console.log("selected: ", day, " with user ids: ", allUserIds);
