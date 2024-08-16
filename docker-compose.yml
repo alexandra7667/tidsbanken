@@ -1,28 +1,28 @@
-version: "3.4"
+version: '3.8'
 
 services:
   backend.api:
     image: backend-api
     build:
-      context: .
-      dockerfile: /Dockerfile
+      context: ./Backend
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
       - "8081:8081"
     networks:
       - backendapi-network
     depends_on:
-      backend.database:
-        condition: service_healthy
+      - backend.database
+
   backend.database:
-    container_name: "backend.database" # host url for my postgres db
+    container_name: "backend.database"
     image: postgres:latest
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - backendapi-network
     volumes:
@@ -32,6 +32,17 @@ services:
       interval: 1s
       timeout: 5s
       retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:8080"
+    environment:
+      - VITE_BACKEND_URL=http://backend.api:8080
+    depends_on:
+      - backend.api
 
 volumes:
   postgres_data:

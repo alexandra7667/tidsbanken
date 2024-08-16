@@ -45,5 +45,4 @@ app.ConfigureSettingsApi();
 app.ConfigureIneligibleApi();
 //app.ApplyProjectMigrations();
 app.Run();
-
 public partial class Program { } // needed for testing - please ignore

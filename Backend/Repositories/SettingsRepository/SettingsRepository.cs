@@ -5,22 +5,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
+using  Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories
 {
-    public class ineligibleRepository : IIneligibleRepository
+    public class SettingsRepository : ISettingsRepository
     {
-        private DatabaseContext _databaseContext;
+        private Context _databaseContext;
 
-        public VacationRequestRepository(DatabaseContext databaseContext)
+        public SettingsRepository(Context databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public Task<bool> SetMaxVacationDays(SettingsPayload payload);
+        public async Task<bool> SetMaxVacationDays(SettingsPayload payload)
         {
             //Find the only setting in the table
-            var setting = await _databaseContext.Settings.FirstOrDefaultAsync();
+            Setting? setting = await _databaseContext.Settings.FirstOrDefaultAsync();
 
             setting.MaxDays = payload.MaxDays;
 
@@ -28,7 +29,7 @@ namespace backend.Repositories
 
             await _databaseContext.SaveChangesAsync();
 
-            return setting;
+            return true;
         }
     }
 }

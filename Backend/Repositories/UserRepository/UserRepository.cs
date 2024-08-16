@@ -5,46 +5,46 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
-
+using  Microsoft.EntityFrameworkCore;
 namespace backend.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private DatabaseContext _databaseContext;
+        private Context _databaseContext;
 
-        public UserRepository(DatabaseContext databaseContext){
+        public UserRepository(Context databaseContext){
             _databaseContext = databaseContext;
         }
 
-        public Task<User?> GetUserById(int UserId)
+        public async Task<User?> GetUserById(int UserId)
         {
             var user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Id == UserId);
 
             return user;
         }
 
-        public Task<User?> AuthenticateUser(LoginPayload loginRequest)
+        public async Task<User?> AuthenticateUser(LoginPayload loginRequest)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(u => user.Email == loginRequest.Email);
+            User? user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
-            if(!user || user.Password != loginRequest.Password) {
+            if(user == null || user.Password != loginRequest.Password) {
                 //User does not exist or Wrong email or password
             }
 
             return user;
         }
 
-        public Task<User?> AddUser(AddUserPayload payload)
+        public async Task<User?> AddUser(AddUserPayload payload)
         {
             DateTime ca = DateTime.UtcNow;
 
             var user = new User
             {
-                Name = payload.Name;
-                Password = payload.Password;
-                Email = payload.Email;
-                CreatedAt = ca;
-                UpdatedAt = ca;
+                Name = payload.Name,
+                Password = payload.Password,
+                Email = payload.Email,
+                CreatedAt = ca,
+                UpdatedAt = ca,
             };
 
             await _databaseContext.Users.AddAsync(user);
@@ -54,16 +54,16 @@ namespace backend.Repositories
             return user;
         }
 
-        public Task<IEnumerable<User>?> GetAllUsers()
+        public async Task<IEnumerable<User>?> GetAllUsers()
         {
             var users = await _databaseContext.Users.ToListAsync();
 
             return users;
         }
 
-        public Task<boolean> DeleteUser(int UserId)
+        public async Task<bool> DeleteUser(int UserId)
         {
-            var user = await _databaseContext.Users.FindAsync(userId);
+            var user = await _databaseContext.Users.FindAsync(UserId);
 
             if (user == null)
             {
@@ -77,7 +77,7 @@ namespace backend.Repositories
             return true;
         }
 
-        public Task<User?> UpdatePassword(User user, string newPassword)
+        public async Task<User?> UpdatePassword(User user, string newPassword)
         {
             user.Password = newPassword;
 
@@ -86,7 +86,7 @@ namespace backend.Repositories
             return user;
         }
 
-        public Task<User?> UpdateEmail(User user, string newEmail);
+        public async Task<User?> UpdateEmail(User user, string newEmail)
         {
             user.Email = newEmail;
 

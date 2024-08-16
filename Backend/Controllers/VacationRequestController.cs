@@ -4,6 +4,8 @@ using Backend.Repositories;
 using System.Threading.Tasks;
 using Backend.Payloads;
 using Backend.DTOs;
+using System.Security.Claims;
+
 namespace Backend.Controllers
 {
     public static class VacationRequestApi

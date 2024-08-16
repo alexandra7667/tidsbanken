@@ -1,4 +1,4 @@
 namespace Backend.Payloads
 {
-    public record SettingsPayload(string MaxVacationDays);
+    public record SettingsPayload(int MaxDays);
 }
