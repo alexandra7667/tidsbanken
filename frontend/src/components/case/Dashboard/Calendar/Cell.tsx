@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import "./Calendar.css"
+import "./Calendar.css";
 
 interface CellProps {
   day: string;
@@ -44,7 +44,7 @@ export default function Cell({
     setPicked(true);
     setTimeout(() => {
       setPicked(false);
-    }, 200); 
+    }, 200);
 
     const date = new Date(year, month, +day);
 
@@ -67,18 +67,32 @@ export default function Cell({
   return (
     <>
       <div className={picked ? "pickedcell" : "cell"} onClick={selection}>
-        {day !== null ? day : ""}
-        {request && (
-          <Dropdown className="outlined-dropdown">
-            <Dropdown.Toggle variant="link" size="sm"></Dropdown.Toggle>
-            <Dropdown.Menu>
-              {allUserIds.map((userId, index) => (
-                <Dropdown.Item key={index} onClick={() => console.log("go to history of user id", userId)}>
-                  {userId}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+        {day === null ? (
+          ""
+        ) : (
+          <>
+            {request ? (
+              <>
+                <Dropdown className="outlined-dropdown">
+                  <Dropdown.Toggle variant="link" size="sm">{day}</Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {allUserIds.map((userId, index) => (
+                      <Dropdown.Item
+                        key={index}
+                        onClick={() =>
+                          console.log("go to history of user id", userId)
+                        }
+                      >
+                        {userId}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </>
+            ) : (
+              day
+            )}
+          </>
         )}
       </div>
     </>
