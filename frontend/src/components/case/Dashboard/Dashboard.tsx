@@ -36,10 +36,10 @@ export default function Dashboard() {
         <Button variant="outlined-primary" onClick={today}>Today</Button>
       </div>
 
-      <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} today={today} type={'vacationRequest'}/>
+      <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} type={'vacationRequest'}/>
 
       {user.role === 'admin' && (
-        <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} today={today} type={'ieligiblePeriod'}/>
+        <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} type={'ieligiblePeriod'}/>
       )}
 
       <Calendar year={year} month={month} startPicker={startPicker} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}/>

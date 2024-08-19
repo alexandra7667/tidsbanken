@@ -1,0 +1,43 @@
+[
+    {
+      "id": "1",
+      "title": "Vacation Request 1",
+      "userId": "1",
+      "status": "pending",
+      "startDate": "2024-08-01",
+      "endDate": "2024-08-07"
+    },
+    {
+      "id": "2",
+      "title": "Vacation Request 2",
+      "userId": "1",
+      "status": "denied",
+      "startDate": "2024-09-15",
+      "endDate": "2024-09-20"
+    },
+    {
+      "id": "3",
+      "title": "Vacation Request 3",
+      "userId": "1",
+      "status": "approved",
+      "startDate": "2024-07-01",
+      "endDate": "2024-07-05"
+    },
+    {
+      "id": "4",
+      "title": "Vacation Request 4",
+      "userId": "1",
+      "status": "approved",
+      "startDate": "2024-08-20",
+      "endDate": "2024-08-25"
+    },
+    {
+      "id": "5",
+      "title": "Vacation Request 5",
+      "userId": "1",
+      "status": "approved",
+      "startDate": "2024-09-20",
+      "endDate": "2024-09-25"
+    }
+  ]
+  
