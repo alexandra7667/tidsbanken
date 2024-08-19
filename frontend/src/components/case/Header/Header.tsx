@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Header() {
+    const user = {role: 'admin'};
     const navigate = useNavigate();
     const location = useLocation();
     const [key, setKey] = useState<string | null>(null);
@@ -38,6 +39,10 @@ export default function Header() {
                         </Tab>
                         <Tab eventKey="profile" title="Profile">
                         </Tab>
+                        {user.role === 'admin' && (
+                            <Tab eventKey="admin" title="Admin">
+                        </Tab>
+                        )}
                     </Tabs>
                 </div>
             </Container>
