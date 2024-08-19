@@ -8,6 +8,6 @@ namespace Backend.Repositories
         public Task<IneligiblePeriod> AddIneligible(AddIneligiblePayload payload);
         public Task<IneligiblePeriod?> GetIneligibleById(int ipId);
         public Task<IneligiblePeriod?> UpdateIneligible(int ipId, UpdateIneligiblePayload payload);
-        public Task<bool> DeleteIneligible(int ipId);
+        public Task<IneligiblePeriod?> DeleteIneligible(int ipId);
     }
 }

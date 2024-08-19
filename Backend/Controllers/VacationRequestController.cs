@@ -59,7 +59,7 @@ namespace Backend.Controllers
         public static async Task<IResult> updateRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] UpdateRequestPayload payload, int requestId, ClaimsPrincipal user)
         {
             //Status update can only be done by administrator
-            if (payload.approved != null) {
+            if (payload.Approved != false) {
                 string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
 
                 if (userRole != "ADMIN")
@@ -67,20 +67,20 @@ namespace Backend.Controllers
                     return TypedResults.Unauthorized();
                 }
 
-                bool isApproved = await requestRepository.ApproveRequest(requestId, payload);
+                bool isApproved = await requestRepository.ApproveRequest(payload, requestId);
 
-                if (!isApproved)
+                if (isApproved == null)
                 {
                     return TypedResults.NotFound("Request not found or approval failed.");
                 }
 
                 //When a request is successfully moderated by an administrator, the moderator and the time of moderation should be recorded on the request object
 
-                return TypedResults.Ok(payload.approved ? "The request was approved" : "The request was denied");
+                return TypedResults.Ok(payload.Approved ? "The request was approved" : "The request was denied");
             }
 
             //The request owner may only make updates to the request before the request has been moderated by an administrator.
-            await requestRepository.UpdateRequest(requestId, payload);
+            await requestRepository.UpdateRequest(payload, requestId);
 
             return TypedResults.Ok("The request was updated");
         }

@@ -10,8 +10,8 @@ namespace Backend.Repositories
         Task<IEnumerable<VacationRequest>> GetAllRequests();
         Task<VacationRequest> AddRequest(AddVacationRequestPayload request);
         Task<VacationRequest?> GetRequestById(int requestId);
-        Task<VacationRequest?> ApproveRequest(UpdateRequestPayload payload, int requestId);
-        Task<VacationRequest?> UpdateRequest(UpdateRequestPayload payload, int requestId);
+        Task<bool> ApproveRequest(UpdateRequestPayload payload, int requestId);
+        Task<bool> UpdateRequest(UpdateRequestPayload payload, int requestId);
         Task<bool> DeleteRequest(int requestId);
     }
 }

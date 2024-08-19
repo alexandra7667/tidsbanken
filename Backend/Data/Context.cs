@@ -55,6 +55,7 @@ namespace Backend.Data
         public DbSet<VacationRequest> VacationRequests { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<IneligiblePeriod> IneligiblePeriods { get; set;}
         public DbSet<Setting> Settings {get; set;}
 
     }

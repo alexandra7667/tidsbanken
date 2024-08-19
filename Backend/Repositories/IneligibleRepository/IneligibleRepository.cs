@@ -5,32 +5,33 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
+using Microsoft.EntityFrameworkCore;
 namespace backend.Repositories
 {
-    public class ineligibleRepository : IIneligibleRepository
+    public class IneligibleRepository : IIneligibleRepository
     {
-        private DatabaseContext _databaseContext;
+        private Context _databaseContext;
 
-        public IneligibleRepository(DatabaseContext databaseContext)
+        public IneligibleRepository(Context databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public Task<IEnumerable<IneligiblePeriod>?> GetAllIneligibles();
+        public async Task<IEnumerable<IneligiblePeriod>?> GetAllIneligibles()
         {
             return await _databaseContext.IneligiblePeriods.ToListAsync();
         }
 
-        public Task<IneligiblePeriod> AddIneligible(AddIneligiblePayload payload);
+        public async Task<IneligiblePeriod> AddIneligible(AddIneligiblePayload payload)
         {
             DateTime ca = DateTime.UtcNow;
 
             var ineligiblePeriod = new IneligiblePeriod
             {
-                StartDate = payload.StartDate;
-                EndDate = payload.EndDate;
-                CreatedAt = ca;
-                UpdatedAt = ca;
+                StartDate = payload.StartDate,
+                EndDate = payload.EndDate,
+                CreatedAt = ca,
+                UpdatedAt = ca,
             };
 
             await _databaseContext.IneligiblePeriods.AddAsync(ineligiblePeriod);
@@ -40,16 +41,16 @@ namespace backend.Repositories
             return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> GetIneligibleById(int ipId);
+        public async Task<IneligiblePeriod?> GetIneligibleById(int ipId)
         {
             var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FirstOrDefaultAsync(ip => ip.Id == ipId);
 
             return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> UpdateIneligible(UpdateIneligiblePayload payload, int ipId);
+        public async Task<IneligiblePeriod?> UpdateIneligible(int ipId, UpdateIneligiblePayload payload)
         {
-            var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
+            IneligiblePeriod? ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
 
             ineligiblePeriod.StartDate = payload.StartDate;
             ineligiblePeriod.EndDate = payload.EndDate;
@@ -59,15 +60,16 @@ namespace backend.Repositories
             return ineligiblePeriod;
         }
 
-        public Task<IneligiblePeriod?> DeleteIneligible(int ipId);
+        public async Task<IneligiblePeriod?> DeleteIneligible(int ipId)
         {
-            var ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
+            IneligiblePeriod ineligiblePeriod = await _databaseContext.IneligiblePeriods.FindAsync(ipId);
 
             _databaseContext.IneligiblePeriods.Remove(ineligiblePeriod);
 
             await _databaseContext.SaveChangesAsync();
 
-            return true;
+            return ineligiblePeriod;
         }
+
     }
 }

@@ -3,6 +3,8 @@ using Backend.Models;
 using Backend.Repositories;
 using System.Threading.Tasks;
 using Backend.Payloads;
+using System.Security.Claims;
+
 namespace Backend.Controllers
 {
     public static class IneligibleApi
@@ -23,7 +25,7 @@ namespace Backend.Controllers
             return TypedResults.Ok();
         }
 
-        public static async Task<IResult> createIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] AddIneligiblePeriodPayload payload, ClaimsPrincipal user)
+        public static async Task<IResult> createIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] AddIneligiblePayload payload, ClaimsPrincipal user)
         {
             //Admin only
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
@@ -42,7 +44,7 @@ namespace Backend.Controllers
             return TypedResults.Ok();
         }
 
-        public static async Task<IResult> updateIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] UpdateIneligiblePeriodPayload payload, ClaimsPrincipal user, int ipId)
+        public static async Task<IResult> updateIneligible([FromServices] IIneligibleRepository ineligibleRepository, [FromBody] UpdateIneligiblePayload payload, ClaimsPrincipal user, int ipId)
         {
             //Admin only
             string userRole = user.FindFirst(ClaimTypes.Role)?.Value;

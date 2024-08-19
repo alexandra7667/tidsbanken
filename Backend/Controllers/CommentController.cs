@@ -28,7 +28,7 @@ namespace Backend.Controllers
         {
             //Comments for a request may only be viewed by an Administrator or the request owner
 
-            IEnumerable<Comment>? allComments = await commentRepository.GetAllRequests();
+            IEnumerable<Comment>? allComments = await commentRepository.GetAllComments(requestId);
 
             if (allComments == null)
             {
@@ -52,7 +52,7 @@ namespace Backend.Controllers
         {
             //Only Administrators and the request owner may create comments on a particular request
 
-            await requestRepository.AddComment(requestId, payload);
+            await commentRepository.AddComment(payload);
 
             return TypedResults.Ok("Comment created successfully.");
         }
@@ -66,7 +66,7 @@ namespace Backend.Controllers
         {
             //Comments for a request may only be viewed by an Administrator or the request owner
 
-            Comment? comment = await commentRepository.getCommentById(requestId, commentId);
+            Comment? comment = await commentRepository.GetCommentById(requestId, commentId);
 
             if (comment == null)
             {
