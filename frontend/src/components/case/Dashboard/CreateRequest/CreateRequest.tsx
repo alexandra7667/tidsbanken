@@ -10,7 +10,6 @@ interface CreateRequestProps {
   startDate: Date;
   setEndDate: (endDate: Date) => void;
   endDate: Date;
-  today: () => void;
   type: string;
 }
 
@@ -21,7 +20,6 @@ export default function CreateRequest({
   startDate,
   setEndDate,
   endDate,
-  today,
   type
 }: CreateRequestProps) {
   const [showCreate, setShowCreate] = useState(true);
@@ -63,7 +61,6 @@ export default function CreateRequest({
     setStartDate(new Date);
     setEndDate(new Date);
     setStartPicker(true);
-    // today();
   };
 
   return (
