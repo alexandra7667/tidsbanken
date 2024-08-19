@@ -8,10 +8,10 @@ namespace Backend.Repositories
 {
     public class VacationRequestRepository : IVacationRequestRepository
     {
-        private DatabaseContext _databaseContext;
+        private Context _databaseContext;
         private readonly IUserRepository _userRepository;
 
-        public VacationRequestRepository(DatabaseContext databaseContext, IUserRepository userRepository)
+        public VacationRequestRepository(Context databaseContext, IUserRepository userRepository)
         {
             _databaseContext = databaseContext;
             _userRepository = userRepository;

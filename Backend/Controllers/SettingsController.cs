@@ -3,6 +3,8 @@ using Backend.Models;
 using Backend.Repositories;
 using System.Threading.Tasks;
 using Backend.Payloads;
+using System.Security.Claims;
+
 namespace Backend.Controllers
 {
     public static class SettingsApi
