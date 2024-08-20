@@ -22,5 +22,5 @@ The backend is made in C# ASP.NET following the MVC pattern and can be tested vi
 ## Run with Docker  
 Navigate to project root folder  
 docker-compose up --build  
-Backend at "http://localhost:8080"
+Backend at "http://localhost:8080"  
 Frontend at "http://localhost:5173"
