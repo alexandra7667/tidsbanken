@@ -1,6 +1,4 @@
-# Tidsbanken
-
-## ENG
+# Tidsbanken  
 
 The purpose of Tidsbanken is to be a system for managing employee vacation requests. Some key features for users include:
 
@@ -21,24 +19,8 @@ The project's frontend is made with TypeScript using React and Vite. It is based
 
 The backend is made in C# ASP.NET following the MVC pattern and can be tested via Swagger in the browser. The project uses JWT for session management, PostgreSQL as the database, and includes Docker files.
 
-
-## SWE
-
-Tidsbankens syfte är att vara ett system för hantering av anställdas semesteransökningar. Några huvudfunktioner för användare är:
-
-- Att kunna se alla godkända semesteransökningar.
-- Att själv kunna ansöka om semester och uppdatera sin ansökan.
-- Att se sin ansökningshistorik.
-
-För administratörer finns funktionerna:
-
-- Att kunna registrera nya användare och uppdatera användare.
-- Att se alla ansökningar oberoende av status.
-- Att kunna uppdatera och radera ansökningar.
-- Att uppdatera maximalt antal dagar man kan ansöka om semester.
-
-Förutom adminfunktioner har administratörer tillgång till alla funktioner som användare har (dvs. ansöka om semester och se sin historik). Användare har också en profil där de kan uppdatera sin email och lösenord.
-
-Projektets frontend är gjord i TypeScript med React och Vite. Det är baserat på Bootstraps komponentbibliotek med en responsiv mobile-first design.
-
-Backenden är gjord i C# ASP.NET enligt MVC-mönstret och kan testas via Swagger i browsern. Projektet använder JWT för sessionshantering, PostgreSQL som databas och har Docker-filer.
+## Run with Docker  
+Navigate to project root folder  
+docker-compose up --build  
+Backend at port 8080  
+Frontend at port 5173
