@@ -8,7 +8,7 @@ import YearPicker from "./Picker/YearPicker.tsx";
 import MonthPicker from "./Picker/MonthPicker.tsx";
 import CreateRequest from "./CreateRequest/CreateRequest.tsx";
 
-export default function Dashboard() {
+export default function Dashboard({ darkMode }) {
   const user = {role: 'admin'}
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -30,7 +30,7 @@ export default function Dashboard() {
     <>
       <YearPicker year={year} setYear={setYear}/>
 
-      <MonthPicker month={month} setMonth={setMonth} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} />
+      <MonthPicker month={month} setMonth={setMonth} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} darkMode={darkMode} />
 
       <div className="d-flex justify-content-center m-2">
         <Button variant="outlined-primary" onClick={today}>Today</Button>
@@ -42,7 +42,7 @@ export default function Dashboard() {
         <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} type={'ieligiblePeriod'}/>
       )}
 
-      <Calendar year={year} month={month} startPicker={startPicker} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}/>
+      <Calendar year={year} month={month} startPicker={startPicker} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} darkMode={darkMode} />
     </>
   );
 }

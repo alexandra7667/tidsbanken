@@ -73,7 +73,7 @@ export default function Cell({
           <>
             {request ? (
               <>
-                <Dropdown className="outlined-dropdown">
+                <Dropdown className="outline-dropdown">
                   <Dropdown.Toggle variant="link" size="sm">{day}</Dropdown.Toggle>
                   <Dropdown.Menu>
                     {allUserIds.map((userId, index) => (

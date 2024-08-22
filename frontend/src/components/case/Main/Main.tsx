@@ -5,14 +5,17 @@ import Profile from "../Profile/Profile";
 import RequestHistory from "../RequestHistory/RequestHistory";
 import RequestView from "../RequestView/RequestView.tsx";
 import Admin from "../Admin/Admin.tsx";
+import { useState } from "react";
 
 export default function Main() {
+  const [darkMode, setDarkMode] = useState(false);
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/dashboard" element={<Dashboard darkMode={darkMode} />} />
+        <Route path="/profile" element={<Profile darkMode={darkMode} setDarkMode={setDarkMode} />} />
         {/*<Route path="/requesthistory/:userId" element={<RequestHistory />} />*/}
         <Route path="/requesthistory" element={<RequestHistory />} />
         <Route path="/requestview/:requestId" element={<RequestView />} />

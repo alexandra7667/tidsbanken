@@ -1,12 +1,11 @@
-
 import { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import EmailForm from "./UpdateEmail/EmailForm";
 import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
-import DeleteAccount from "./DeleteAccount/DeleteAccount"
+import DeleteAccount from "./DeleteAccount/DeleteAccount";
 import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 
-export default function Profile() {
+export default function Profile({ darkMode, setDarkMode}) {
   const [userData, setUserData] = useState({
     username: "tomas",
     email: "t@t.com",
@@ -14,6 +13,13 @@ export default function Profile() {
   });
 
   const [image, setImage] = useState<string | null>(null);
+
+  const toggleTheme = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    const htmlElement = document.querySelector("html");
+    htmlElement.setAttribute("data-bs-theme", newMode ? "dark" : "light");
+  };
 
   return (
     <>
@@ -53,6 +59,14 @@ export default function Profile() {
               setUserData={setUserData}
               setImage={setImage}
             />
+          </Col>
+        </Row>
+
+        <Row className="justify-content-center mt-4">
+          <Col xs="auto">
+            <Button variant="outline-info" onClick={toggleTheme}>
+              {darkMode ? "Light Mode" : "Dark Mode"}
+            </Button>
           </Col>
         </Row>
 
