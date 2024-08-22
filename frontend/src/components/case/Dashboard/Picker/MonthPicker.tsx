@@ -9,7 +9,7 @@ import {
 import { CaretLeftFill, CaretRightFill } from "react-bootstrap-icons";
 import { monthNames } from "../../../../assets/strings/monthNames";
 
-export default function MonthPicker({ month, setMonth, selectedMonth, setSelectedMonth }) {
+export default function MonthPicker({ month, setMonth, selectedMonth, setSelectedMonth, darkMode }) {
     const previousMonth = () => {
         //If january - set december
         if (month === 0) {
@@ -54,7 +54,7 @@ export default function MonthPicker({ month, setMonth, selectedMonth, setSelecte
         
         <Col xs="auto" className="px-1">
           <DropdownButton
-            variant="outline-dark"
+            variant={darkMode ? "outline-light" : "outline-dark"}
             size="lg"
             id="dropdown-month"
             title={selectedMonth}

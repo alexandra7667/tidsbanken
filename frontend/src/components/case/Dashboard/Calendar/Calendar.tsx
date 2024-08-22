@@ -17,6 +17,7 @@ interface CalendarProps {
   setStartDate: (startDate: Date) => void;
   endDate: Date;
   setEndDate: (endDate: Date) => void;
+  darkMode: boolean;
 }
 
 export default function Calendar({
@@ -27,6 +28,7 @@ export default function Calendar({
   setStartDate,
   endDate,
   setEndDate,
+  darkMode,
 }: CalendarProps) {
   const [allDays, setAllDays] = useState([]);
   const [visibleVacationRequests, setVisibleVacationRequests] = useState([]);
@@ -65,7 +67,7 @@ export default function Calendar({
   return (
     <div className="calendar">
       {weekDays.map((day) => (
-        <div className="header" key={day}>
+        <div className={darkMode ? "header-dark" : "header-light"} key={day}>
           {day}
         </div>
       ))}

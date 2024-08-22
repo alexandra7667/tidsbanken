@@ -22,8 +22,13 @@
     padding: 2px;
   }
   
-  .header {
+  .header-light {
     background: #f4f4f4;
+    font-weight: bold;
+  }
+
+  .header-dark {
+    background: #19191a;
     font-weight: bold;
   }
 
