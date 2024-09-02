@@ -22,7 +22,8 @@ namespace Backend.Controllers
             authGroup.MapPost("/id/update_password", updatePassword);
         }
 
-        public static async Task<IResult> getAllUsers([FromServices] IUserRepository userRepository){
+        public static async Task<IResult> getAllUsers([FromServices] IUserRepository userRepository)
+        {
             IEnumerable<User>? users = await userRepository.GetAllUsers();
 
             return TypedResults.Ok(users);
@@ -69,29 +70,51 @@ namespace Backend.Controllers
         }
         public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user, [FromBody] AddUserPayload payload)
         {
+            // Debugging logs
+            Console.WriteLine("Starting registerUser method");
+
             // Get the admin ID from the claims
             string? adminIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine("User: " + user);
+            
+            foreach (var claim in user.Claims)
+            {
+                Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            }
+            Console.WriteLine("Admin ID String: " + adminIdString);
 
             if (adminIdString == null || !int.TryParse(adminIdString, out int adminId))
             {
+                Console.WriteLine("Admin ID is invalid or not provided.");
                 return TypedResults.Unauthorized();
             }
 
             User? adminUser = await userRepository.GetUserById(adminId);
-
             if (adminUser == null)
             {
+                Console.WriteLine("Admin user not found.");
                 return TypedResults.NotFound("Admin user not found.");
             }
 
             if (adminUser.Role != Enums.Role.ADMIN)
             {
+                Console.WriteLine("User is not an admin.");
                 return TypedResults.Forbid();
             }
 
-            await userRepository.AddUser(payload);
-            return TypedResults.Ok("User registered successfully.");
+            try
+            {
+                await userRepository.AddUser(payload);
+                Console.WriteLine("User registered successfully.");
+                return TypedResults.Ok("User registered successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error registering user: {ex.Message}");
+                return TypedResults.Problem("Error registering user.");
+            }
         }
+
 
         public static async Task<IResult> getUserById([FromServices] IUserRepository userRepository, int userId)
         {

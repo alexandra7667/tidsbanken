@@ -36,6 +36,7 @@ namespace backend.Repositories
                 Name = payload.Name,
                 Password = hashedPassword,
                 Email = payload.Email,
+                ProfilePicture = "...",
                 CreatedAt = ca,
                 UpdatedAt = ca,
             };
