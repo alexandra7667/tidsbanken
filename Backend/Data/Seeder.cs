@@ -16,7 +16,7 @@ namespace Backend.Data
                 ProfilePicture = "...",
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-                role = Enums.Role.ADMIN,
+                Role = Enums.Role.ADMIN,
                 });
         }
         public List<User> Users { get { return _users; } }

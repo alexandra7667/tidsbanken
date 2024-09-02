@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
 using  Microsoft.EntityFrameworkCore;
+using backend.Security;
 namespace backend.Repositories
 {
     public class UserRepository : IUserRepository
@@ -28,7 +29,7 @@ namespace backend.Repositories
             DateTime ca = DateTime.UtcNow;
 
             //Hash password
-            string hashedPassword = PasswordHasher.HashPassword(payload.Password)
+            string hashedPassword = PasswordHasher.HashPassword(payload.Password);
 
             var user = new User
             {

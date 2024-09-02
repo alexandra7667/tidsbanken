@@ -1,21 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\elias\\tidsbanken\\Backend\\Backend.csproj": {}
+    "C:\\Users\\AHarns\\Documents\\tidsbanken\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\elias\\tidsbanken\\Backend\\Backend.csproj": {
+    "C:\\Users\\AHarns\\Documents\\tidsbanken\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\elias\\tidsbanken\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\AHarns\\Documents\\tidsbanken\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\elias\\tidsbanken\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\elias\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\elias\\tidsbanken\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\AHarns\\Documents\\tidsbanken\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\AHarns\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AHarns\\Documents\\tidsbanken\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\elias\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\AHarns\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -58,9 +57,17 @@
               "target": "Package",
               "version": "[7.0.5, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "microsoft.entityframeworkcore.relational": {
               "target": "Package",
@@ -94,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

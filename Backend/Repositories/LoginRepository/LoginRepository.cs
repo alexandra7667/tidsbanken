@@ -1,20 +1,21 @@
-using backend.Models;
-using backend.Data;
-using backend.Payloads;
-using backend.Services;
+using Backend.Models;
+using Backend.Data;
+using Backend.Repositories;
 using Microsoft.AspNetCore.Identity;
-using backend.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Backend.Payloads;
+using backend.Services;
+using Microsoft.EntityFrameworkCore;
+using backend.Security;
 namespace backend.Repositories
 {
     public class LoginRepository : ILoginRepository
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly Context _databaseContext;
         private readonly TokenService _tokenService;
 
-        public UserRepository(DatabaseContext db, TokenService tokenService)
+        public LoginRepository(Context db, TokenService tokenService)
         {
             _databaseContext = db;
             _tokenService = tokenService;
@@ -32,10 +33,9 @@ namespace backend.Repositories
             return user;
         }
 
-        public async Task<string> Login(User user)
+        public string GenerateToken(User user)
         {
             var token = _tokenService.GenerateToken(user);
-
             return token;
         }
     }
