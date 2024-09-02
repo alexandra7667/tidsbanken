@@ -1,4 +1,5 @@
 using Backend.Models;
+using backend.Security;
 
 namespace Backend.Data
 {
@@ -11,11 +12,11 @@ namespace Backend.Data
             _users.Add(new User {
                 Id = 1,
                 Name = "Admin",
-                Password = "Admin123456",
+                Password = PasswordHasher.HashPassword("Admin123456"),
                 Email = "Admin@admin.com",
                 ProfilePicture = "...",
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 Role = Enums.Role.ADMIN,
                 });
         }

@@ -25,13 +25,22 @@ namespace backend.Repositories
         {
             User? user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
-            if(user == null || !PasswordHasher.VerifyPassword(loginRequest.Password, user.Password)) { //Hashes password from the request to match it against the hashed password in the database
-                //Wrong email or password
-                return null;
+            if (user == null)
+            {
+                Console.WriteLine("User not found");
+                return null;  // User does not exist
             }
 
+            if (!PasswordHasher.VerifyPassword(loginRequest.Password, user.Password))
+            {
+                Console.WriteLine("Password mismatch");
+                return null;  // Password does not match
+            }
+
+            Console.WriteLine("User authenticated successfully");
             return user;
         }
+
 
         public string GenerateToken(User user)
         {

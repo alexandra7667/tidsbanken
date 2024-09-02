@@ -13,12 +13,19 @@ namespace Backend.Controllers
         {
             var authGroup = app.MapGroup("user");
             authGroup.MapGet("/", getUser);
+            authGroup.MapGet("/allUSers", getAllUsers); //remove later, only for debugging
             authGroup.MapPost("/", registerUser);
             authGroup.MapGet("/id", getUserById);
             authGroup.MapPatch("/id", updateEmail);
             authGroup.MapDelete("/id", deleteUser);
             authGroup.MapGet("/id/requests", getUserRequests);
             authGroup.MapPost("/id/update_password", updatePassword);
+        }
+
+        public static async Task<IResult> getAllUsers([FromServices] IUserRepository userRepository){
+            IEnumerable<User>? users = await userRepository.GetAllUsers();
+
+            return TypedResults.Ok(users);
         }
 
         public static async Task<IResult> getUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user)
