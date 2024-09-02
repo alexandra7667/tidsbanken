@@ -19,7 +19,7 @@ namespace Backend.DTOs
             Name = user.Name;
             Email = user.Email;
             ProfilePicture = user.ProfilePicture;
-            Role = user.role;
+            Role = user.Role;
         }
     }
 }

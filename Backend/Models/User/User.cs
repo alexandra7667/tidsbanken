@@ -23,7 +23,7 @@ namespace Backend.Models
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
         [Column("role")]
-        public Role role { get; set; } = Role.USER;
+        public Role Role { get; set; } = Role.USER;
 
         public List<Comment> Comments { get; set; }
         public List<VacationRequest> VacationRequests { get; set; }

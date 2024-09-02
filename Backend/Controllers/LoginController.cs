@@ -27,7 +27,7 @@ namespace Backend.Controllers
 
             var token = loginRepository.GenerateToken(user);
 
-            LoginResponse loginResponse = new LoginResponse(token, userDTO)
+            LoginResponse loginResponse = new LoginResponse(token, userDTO);
 
             return TypedResults.Ok(loginResponse);
         }

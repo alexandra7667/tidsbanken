@@ -5,6 +5,6 @@ namespace Backend.Repositories
     public interface ILoginRepository
     {
         public Task<User?> AuthenticateUser(LoginPayload loginRequest);
-        public Task<string> GenerateToken(User user);
+        public string GenerateToken(User user);
     }
 }

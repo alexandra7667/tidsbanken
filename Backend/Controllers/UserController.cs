@@ -77,7 +77,7 @@ namespace Backend.Controllers
                 return TypedResults.NotFound("Admin user not found.");
             }
 
-            if (adminUser.role != Enums.Role.ADMIN)
+            if (adminUser.Role != Enums.Role.ADMIN)
             {
                 return TypedResults.Forbid();
             }
