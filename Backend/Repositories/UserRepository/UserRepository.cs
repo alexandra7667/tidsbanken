@@ -27,10 +27,13 @@ namespace backend.Repositories
         {
             DateTime ca = DateTime.UtcNow;
 
+            //Hash password
+            string hashedPassword = PasswordHasher.HashPassword(payload.Password)
+
             var user = new User
             {
                 Name = payload.Name,
-                Password = payload.Password,
+                Password = hashedPassword,
                 Email = payload.Email,
                 CreatedAt = ca,
                 UpdatedAt = ca,

@@ -24,7 +24,7 @@ namespace backend.Repositories
         {
             User? user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
-            if(user == null || user.Password != loginRequest.Password) {
+            if(user == null || !PasswordHasher.VerifyPassword(loginRequest.Password, user.Password)) { //Hashes password from the request to match it against the hashed password in the database
                 //Wrong email or password
                 return null;
             }
