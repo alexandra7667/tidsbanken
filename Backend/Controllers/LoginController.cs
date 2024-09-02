@@ -11,12 +11,12 @@ namespace Backend.Controllers
         public static void ConfigureLoginApi(this WebApplication app)
         {
             var authGroup = app.MapGroup("login");
-            authGroup.MapPost("/", login);
+            authGroup.MapPost("/login", login);
         }
 
-        public static async Task<IResult> login([FromServices] IUserRepository userRepository, [FromBody] LoginPayload loginRequest)
+        public static async Task<IResult> login([FromServices] ILoginRepository loginRepository, [FromBody] LoginPayload loginRequest)
         {
-            User? user = await userRepository.AuthenticateUser(loginRequest);
+            User? user = await loginRepository.AuthenticateUser(loginRequest);
 
             if (user == null)
             {
@@ -25,7 +25,11 @@ namespace Backend.Controllers
 
             UserDTO userDTO = new UserDTO(user);
 
-            return TypedResults.Ok(userDTO);
+            var token = loginRepository.GenerateToken(user);
+
+            LoginResponse loginResponse = new LoginResponse(token, userDTO)
+
+            return TypedResults.Ok(loginResponse);
         }
     }
 }

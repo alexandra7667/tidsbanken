@@ -23,17 +23,6 @@ namespace backend.Repositories
             return user;
         }
 
-        public async Task<User?> AuthenticateUser(LoginPayload loginRequest)
-        {
-            User? user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
-
-            if(user == null || user.Password != loginRequest.Password) {
-                //User does not exist or Wrong email or password
-            }
-
-            return user;
-        }
-
         public async Task<User?> AddUser(AddUserPayload payload)
         {
             DateTime ca = DateTime.UtcNow;
