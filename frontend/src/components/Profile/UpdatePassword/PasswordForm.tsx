@@ -1,13 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import updatePassword from "./UpdatePassword";
+import Password from "../../../interfaces/Password";
 
 export default function PasswordForm() {
-  const [password, setPassword] = useState({
+  const [password, setPassword] = useState<Password>({
     oldPassword: "",
     newPassword: "",
   });
-  const [passwordValidated, setPasswordValidated] = useState(false);
+  const [passwordValidated, setPasswordValidated] = useState<boolean>(false);
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword((prevPassword) => ({

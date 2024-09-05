@@ -1,4 +1,6 @@
-export default function createCalendarMonth(year, month, setAllDays) {
+import { SetStateAction } from "react";
+
+export default function createCalendarMonth(year: number, month: number, setAllDays: (days: number[]) => void) {
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDay = new Date(year, month, 0).getDay(); //Which day the 1st is on. Monday=0

@@ -1,4 +1,6 @@
-export default function getDatesBetween(request, vacationMapFiller) {
+import VacationRequest from "../../../interfaces/VacationRequest";
+
+export default function getDatesBetween(request: VacationRequest, vacationMapFiller: Map<Date, string[]>) {
   let currentDate = new Date(request.startDate);
   currentDate.setHours(0, 0, 0, 0);
   const endDate = new Date(request.endDate);

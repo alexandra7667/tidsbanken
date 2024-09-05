@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import Calendar from "./Calendar/Calendar.tsx";
 import {
   Button,
@@ -7,9 +7,29 @@ import { monthNames } from "../../assets/strings/monthNames.ts";
 import YearPicker from "./Picker/YearPicker.tsx";
 import MonthPicker from "./Picker/MonthPicker.tsx";
 import CreateRequest from "./Calendar/CreateRequest/CreateRequest.tsx";
+import CalendarContextType from "../../interfaces/CalendarContextType.ts";
+import { UserContext } from "../../App.tsx";
 
-export default function Dashboard({ darkMode }) {
-  const user = {role: 'admin'}
+const defaultCalendarContext: CalendarContextType = {
+  darkMode: false,
+  month: 0,
+  setMonth: () => {},
+  year: 0,
+  setYear: () => {},
+  selectedMonth: '',
+  setSelectedMonth: () => {},
+  startDate: new Date(),
+  setStartDate: () => {},
+  endDate: new Date(),
+  setEndDate: () => {},
+  startPicker: true,
+  setStartPicker: () => {},
+};
+
+const CalendarContext = createContext<CalendarContextType>(defaultCalendarContext);
+
+export default function Dashboard() {
+  const { user } = useContext(UserContext);
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth(); //0 = January, 1 = February, etc.
@@ -26,23 +46,41 @@ export default function Dashboard({ darkMode }) {
     setSelectedMonth(monthNames[currentMonth]);
   };
 
-  return (
-    <>
-      <YearPicker year={year} setYear={setYear}/>
+  const calendarContextValue: CalendarContextType = {
+    darkMode: user!.darkMode, //! (non-null assertion operator) guarantees user is not null
+    month,
+    setMonth,
+    year,
+    setYear,
+    selectedMonth,
+    setSelectedMonth,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    startPicker,
+    setStartPicker,
+  };
 
-      <MonthPicker month={month} setMonth={setMonth} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} darkMode={darkMode} />
+  return (
+    <CalendarContext.Provider value={calendarContextValue}>
+      <YearPicker />
+
+      <MonthPicker />
 
       <div className="d-flex justify-content-center m-2">
         <Button variant="outlined-primary" onClick={today}>Today</Button>
       </div>
 
-      <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} type={'vacationRequest'}/>
+      <CreateRequest type={'vacationRequest'}/>
 
-      {user.role === 'admin' && (
-        <CreateRequest startPicker={startPicker} setStartPicker={setStartPicker} setStartDate={setStartDate} startDate={startDate} setEndDate={setEndDate} endDate={endDate} type={'ieligiblePeriod'}/>
+      {user!.role === 'admin' && (
+        <CreateRequest type={'ieligiblePeriod'}/>
       )}
 
-      <Calendar year={year} month={month} startPicker={startPicker} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} darkMode={darkMode} />
-    </>
+      <Calendar />
+    </CalendarContext.Provider>
   );
 }
+
+export { CalendarContext };

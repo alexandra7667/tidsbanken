@@ -1,24 +1,24 @@
 import { backendUrl } from "./assets/strings/backendUrl";
 import User from "./interfaces/User";
 
-export const restoreUser = async (storedToken: string, setUser: React.Dispatch<React.SetStateAction<User | null>>) => {
+export default async function restoreUser(storedToken: string) : Promise<User> {
     const headers = {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${storedToken}`
     };
 
-    const fetchUserResponse = await fetch(`${backendUrl}/authentication/getUserByToken`, {
+    const fetchUserResponse = await fetch(`${backendUrl}/user/getUser`, {
       method: "GET",
       headers: headers
     });
 
     if (!fetchUserResponse.ok) {
-      throw new Error("Failed to get user from the database");
+      console.log("Failed to get user from the database");
     }
 
     const returnedUser = await fetchUserResponse.json();
 
-    console.log("Fetched user: ", returnedUser);
-
-    setUser(returnedUser);
+    console.log("Fetched user URL: ", returnedUser);
+    
+    return returnedUser;
   }

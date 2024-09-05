@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import EmailForm from "./UpdateEmail/EmailForm.tsx";
 import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
@@ -6,17 +6,17 @@ import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx";
 import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 import { UserContext } from "../../App.tsx";
 
-interface ProfileProps  {
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
-}
-
-export default function Profile({ darkMode, setDarkMode}: ProfileProps) {
-  const { user } = useContext(UserContext);
+export default function Profile() {
+  const { user, setUser } = useContext(UserContext);
+  const [darkMode, setDarkMode] = useState<boolean>(user!.darkMode);
 
   const toggleTheme = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
+    setUser((prevUser) => ({
+      ...prevUser!, //Guarantee user has already been set and is not null
+      darkMode: newMode
+    }));
     const htmlElement = document.querySelector("html");
     if(htmlElement) htmlElement.setAttribute("data-bs-theme", newMode ? "dark" : "light");
   };
@@ -26,19 +26,19 @@ export default function Profile({ darkMode, setDarkMode}: ProfileProps) {
       <Container>
         <Row className="justify-content-center mt-4">
           <Col xs="auto">
-            {user.profilePic && <img src={user.profilePic as string} style={{ width: "100px" }} />}
+            {user!.profilePicture && <img src={user!.profilePicture as string} style={{ width: "100px" }} />}
           </Col>
         </Row>
 
         <Row className="justify-content-center">
           <Col xs="auto">
-            <h2 className="m-2">{user.name}</h2>
+            <h2 className="m-2">{user!.name}</h2>
           </Col>
         </Row>
 
         <Row className="justify-content-center">
           <Col className="mt-4 border p-2 m-2" xs={12} sm={10} md={6} lg={4}>
-            <EmailForm email={user.email} />
+            <EmailForm email={user!.email} />
           </Col>
 
           <Col className="mt-4 border p-2 m-2" xs={12} sm={10} md={6} lg={4}>

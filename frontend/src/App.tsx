@@ -19,9 +19,14 @@ function App() {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      restoreUser(storedToken, setUser);
+      fetchAndSetUser(storedToken);
     }
-  }, [user]);
+  }, []);
+
+  async function fetchAndSetUser(storedToken: string) {
+    const storedUser = await restoreUser(storedToken);
+    setUser(storedUser);
+  }
 
   return (
     <>

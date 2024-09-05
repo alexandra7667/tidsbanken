@@ -8,36 +8,39 @@ import {
 } from "react-bootstrap";
 import { CaretLeftFill, CaretRightFill } from "react-bootstrap-icons";
 import { monthNames } from "../../../assets/strings/monthNames";
+import { CalendarContext } from "../Dashboard.tsx";
+import { useContext } from "react";
 
-export default function MonthPicker({ month, setMonth, selectedMonth, setSelectedMonth, darkMode }) {
-    const previousMonth = () => {
-        //If january - set december
-        if (month === 0) {
-          setMonth(11);
-          setSelectedMonth(monthNames[11]);
-        }
-        else {
-          setMonth(month - 1);
-          setSelectedMonth(monthNames[month - 1]);
-        }
-      };
-    
-      const nextMonth = () => {
-        //if december - set january
-        if (month === 11) {
-          setMonth(0);
-          setSelectedMonth(monthNames[0])
-        }
-        else {
-          setMonth(month + 1);
-          setSelectedMonth(monthNames[month + 1]);
-        }
-      };
-    
-      const handleSelect = (monthName: string) => {
-        setSelectedMonth(monthName);
-        setMonth(monthNames.indexOf(monthName));
-      };
+export default function MonthPicker() {
+  const { month, setMonth, selectedMonth, setSelectedMonth, darkMode } =
+    useContext(CalendarContext);
+
+  const previousMonth = () => {
+    //If january - set december
+    if (month === 0) {
+      setMonth(11);
+      setSelectedMonth(monthNames[11]);
+    } else {
+      setMonth(month - 1);
+      setSelectedMonth(monthNames[month - 1]);
+    }
+  };
+
+  const nextMonth = () => {
+    //if december - set january
+    if (month === 11) {
+      setMonth(0);
+      setSelectedMonth(monthNames[0]);
+    } else {
+      setMonth(month + 1);
+      setSelectedMonth(monthNames[month + 1]);
+    }
+  };
+
+  const handleSelect = (monthName: string) => {
+    setSelectedMonth(monthName);
+    setMonth(monthNames.indexOf(monthName));
+  };
 
   return (
     <Container>
@@ -51,7 +54,7 @@ export default function MonthPicker({ month, setMonth, selectedMonth, setSelecte
             <CaretLeftFill />
           </Button>
         </Col>
-        
+
         <Col xs="auto" className="px-1">
           <DropdownButton
             variant={darkMode ? "outline-light" : "outline-dark"}

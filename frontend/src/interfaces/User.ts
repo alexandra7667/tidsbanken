@@ -5,5 +5,6 @@ export default interface User {
     email: string;
     profilePicture: string;
     role: string;
+    darkMode: boolean;
   }
   

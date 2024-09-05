@@ -1,19 +1,18 @@
-import Request from "../../../interfaces/Request";
-import getDatesBetween from "./GetDatesBetween";
+import VacationRequest from "../../../interfaces/VacationRequest";
 
 export default function setList(
-  fetchedVacationRequests,
-  setVisibleVacationRequests,
-  userId,
+  fetchedVacationRequests: VacationRequest[],
+  setVisibleVacationRequests: React.Dispatch<React.SetStateAction<VacationRequest[] | undefined>>,
+  userId: string,
 
 ) {
   const requests = [];
 
-  for (const request of fetchedVacationRequests) {
-    if (request.status === 'approved') {
-        requests.push(request);
-    } else if (request.userId === userId) {
-        requests.push(request);
+  for (const vacationRequest of fetchedVacationRequests) {
+    if (vacationRequest.isApproved === 'APPROVED') {
+        requests.push(vacationRequest);
+    } else if (vacationRequest.userId === userId) {
+        requests.push(vacationRequest);
     }
   }
 
