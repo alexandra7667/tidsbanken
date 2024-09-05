@@ -11,7 +11,7 @@ public class VacationRequestDTO
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
-        public VacationRequestState IsApproved { get; set; }
+        public string IsApproved { get; set; }
         public int UserId { get; set; }
 
         public VacationRequestDTO(VacationRequest vacationRequest)
@@ -20,7 +20,7 @@ public class VacationRequestDTO
             StartDate = vacationRequest.StartDate;
             EndDate = vacationRequest.EndDate;
             Description = vacationRequest.Description;
-            IsApproved = vacationRequest.IsApproved;
+            IsApproved = vacationRequest.IsApproved.ToString();
             UserId = vacationRequest.UserId;
         }
     }

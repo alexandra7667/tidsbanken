@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { weekDays } from "../../../assets/strings/weekdays";
 import "./Calendar.css";
 import Cell from "./Cell";
@@ -7,31 +7,16 @@ import getAllVacationRequests from "./GetAllVacationRequests";
 import setList from "./SetList";
 import getDatesBetween from "./GetDatesBetween";
 import matchDays from "./MatchDays";
-import data from "../../../assets/data/Requests.json"
+// import data from "../../../assets/data/Requests.json";
+import { CalendarContext } from "../Dashboard.tsx";
+import { UserContext } from "../../../App.tsx";
+import VacationRequest from "../../../interfaces/VacationRequest.ts";
 
-interface CalendarProps {
-  year: number;
-  month: number;
-  startPicker: boolean;
-  startDate: Date;
-  setStartDate: (startDate: Date) => void;
-  endDate: Date;
-  setEndDate: (endDate: Date) => void;
-  darkMode: boolean;
-}
-
-export default function Calendar({
-  year,
-  month,
-  startPicker,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
-  darkMode,
-}: CalendarProps) {
-  const [allDays, setAllDays] = useState([]);
-  const [visibleVacationRequests, setVisibleVacationRequests] = useState([]);
+export default function Calendar() {
+  const { darkMode, year, month } = useContext(CalendarContext);
+  const { user } = useContext(UserContext);
+  const [allDays, setAllDays] = useState<number[]>();
+  const [visibleVacationRequests, setVisibleVacationRequests] = useState<VacationRequest[]>();
   type mapType = Map<Date, string[]>;
   const vacationMapFiller: mapType = new Map();
   const [vacationMap, setVacationMap] = useState<mapType>(new Map());
@@ -42,27 +27,22 @@ export default function Calendar({
 
   useEffect(() => {
     const fetchVacationRequests = async () => {
-      // const fetchedVacationRequests = await getAllVacationRequests();
-      console.log("mock data: ", data)
-      setList(
-        data,
-        setVisibleVacationRequests,
-        1, 
-      );
+      const fetchedVacationRequests = await getAllVacationRequests();
+      // console.log("mock data: ", data);
+      setList(fetchedVacationRequests, setVisibleVacationRequests, user!.id);
     };
 
     fetchVacationRequests();
   }, []);
 
   useEffect(() => {
-    if(visibleVacationRequests.length > 0) {
+    if (visibleVacationRequests && visibleVacationRequests.length > 0) {
       for (const request of visibleVacationRequests) {
         getDatesBetween(request, vacationMapFiller);
       }
       setVacationMap(vacationMapFiller);
     }
-  }, [visibleVacationRequests])
-
+  }, [visibleVacationRequests]);
 
   return (
     <div className="calendar">
@@ -71,23 +51,17 @@ export default function Calendar({
           {day}
         </div>
       ))}
-      {vacationMap.size > 0 && allDays.map((day, index) => {
-        const { allUserIds } = matchDays(day, month, year, vacationMap); //All user id:s that have this day approved for vacation
-        return (
-          <Cell
-            key={index}
-            day={day}
-            month={month}
-            year={year}
-            startPicker={startPicker}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            allUserIds={allUserIds}
-          />
-        );
-      })}
+      {vacationMap.size > 0 &&
+        allDays!.map((day, index) => {
+          const { allUserIds } = matchDays(day, month, year, vacationMap); //All user id:s that have this day approved for vacation
+          return (
+            <Cell
+              key={index}
+              day={day}
+              allUserIds={allUserIds}
+            />
+          );
+        })}
     </div>
   );
 }

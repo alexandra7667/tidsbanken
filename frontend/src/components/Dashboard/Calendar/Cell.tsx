@@ -1,30 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import "./Calendar.css";
+import { CalendarContext } from "../Dashboard";
 
 interface CellProps {
-  day: string;
-  year: number;
-  month: number;
-  startPicker: boolean;
-  startDate: Date;
-  setStartDate: (startDate: Date) => void;
-  endDate: Date;
-  setEndDate: (endDate: Date) => void;
+  day: number,
   allUserIds: string[];
 }
 
 export default function Cell({
-  day,
-  month,
-  year,
-  startPicker,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
+  day, 
   allUserIds,
 }: CellProps) {
+  const { month, year, startPicker, startDate, setStartDate, endDate, setEndDate} = useContext(CalendarContext);
   const [request, setRequest] = useState(false);
   const [picked, setPicked] = useState(false);
 

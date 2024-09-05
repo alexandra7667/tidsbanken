@@ -16,9 +16,10 @@ export default function ChoosePicture() {
       reader.onloadend = () => {
         const imageUrl = reader.result as string;
         setUser((prevUser) => ({
-          ...prevUser!, //! means if user is null
+          ...prevUser!, //! guarantees user is not null
           profilePic: imageUrl
-        }));        
+        }));
+        //@Todo Update in database
       };
     }
   };

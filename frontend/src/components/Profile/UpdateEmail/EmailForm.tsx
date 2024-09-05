@@ -1,10 +1,12 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import updateEmail from "./UpdateEmail";
+import { UserContext } from "../../../App";
 
 export default function EmailForm({ email }: { email: string }) {
-  const [newEmail, setNewEmail] = useState(email);
-  const [emailValidated, setEmailValidated] = useState(false);
+  const [newEmail, setNewEmail] = useState<string>(email);
+  const [emailValidated, setEmailValidated] = useState<boolean>(false);
+  const { user, setUser } = useContext(UserContext);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewEmail(e.target.value);
@@ -18,7 +20,12 @@ export default function EmailForm({ email }: { email: string }) {
       e.stopPropagation();
     } else {
       console.log("Profile form email data: ", newEmail);
-      updateEmail(newEmail);
+      updateAndSetUser();
+    }
+
+    async function updateAndSetUser() {
+      const updatedUser = await updateEmail(newEmail, user!.id);
+      setUser(updatedUser);
     }
 
     //Show valid/invalid feedback
@@ -32,10 +39,10 @@ export default function EmailForm({ email }: { email: string }) {
         <Form.Control
           required
           type="email"
-          name="email"
-          value={email}
+          name="newEmail"
+          value={newEmail}
           onChange={handleEmailChange}
-          isInvalid={emailValidated && !email}
+          isInvalid={emailValidated && !newEmail}
         />
         <Form.Control.Feedback type="invalid">
           Email cannot be empty

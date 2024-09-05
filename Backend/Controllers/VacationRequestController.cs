@@ -37,7 +37,6 @@ namespace Backend.Controllers
 
         public static async Task<IResult> createRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] AddVacationRequestPayload request)
         {
-            // Add logic to create a vacation request
             await requestRepository.AddRequest(request);
             return TypedResults.Ok("Request created successfully.");
         }

@@ -1,7 +1,12 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { CaretLeftFill, CaretRightFill } from "react-bootstrap-icons";
+import { CalendarContext } from "../Dashboard.tsx";
+import { useContext } from "react";
 
-export default function YearPicker({ year, setYear }) {
+
+export default function YearPicker() {
+  const { year, setYear } = useContext(CalendarContext);
+
   const previousYear = () => {
     setYear(year - 1);
   };
@@ -10,7 +15,6 @@ export default function YearPicker({ year, setYear }) {
     setYear(year + 1);
   };
   
-
   return (
     <Container className="mt-4 mb-2 ">
       <Row className="align-items-center justify-content-center">

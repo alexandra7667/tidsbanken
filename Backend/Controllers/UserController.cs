@@ -68,6 +68,7 @@ namespace Backend.Controllers
 
             return Results.Redirect(locationUrl, permanent: false);
         }
+        
         public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user, [FromBody] AddUserPayload payload)
         {
             // Debugging logs

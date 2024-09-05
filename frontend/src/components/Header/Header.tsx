@@ -1,11 +1,12 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Tabs, Tab } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from "../../App.tsx";
 
 export default function Header() {
-    const user = {role: 'admin'};
+    const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [key, setKey] = useState<string | null>(null);
@@ -17,6 +18,7 @@ export default function Header() {
     }, [location]);
 
     const handleSelect = (k: string | null) => {
+        if(!user) return;
         setKey(k);
         //if (k === 'requesthistory') navigate(`/requesthistory/${user.id}`);
         if (k === 'requesthistory') navigate(`/requesthistory`);
@@ -39,7 +41,7 @@ export default function Header() {
                         </Tab>
                         <Tab eventKey="profile" title="Profile">
                         </Tab>
-                        {user.role === 'admin' && (
+                        {user && user.role === 'admin' && (
                             <Tab eventKey="admin" title="Admin">
                         </Tab>
                         )}

@@ -64,6 +64,8 @@ namespace backend.Repositories
                 return false;
             }
 
+            //@Todo Remove all user's vacation requests and comments
+
             _databaseContext.Users.Remove(user);
 
             await _databaseContext.SaveChangesAsync();
