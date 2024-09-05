@@ -11,11 +11,12 @@ namespace Backend.Controllers
         public static void ConfigureLoginApi(this WebApplication app)
         {
             var authGroup = app.MapGroup("login");
-            authGroup.MapPost("/login", login);
+            authGroup.MapPost("/", login);
         }
 
         public static async Task<IResult> login([FromServices] ILoginRepository loginRepository, [FromBody] LoginPayload loginRequest)
         {
+            Console.WriteLine("IN LOGIN CONTROLLER");
             User? user = await loginRepository.AuthenticateUser(loginRequest);
 
             if (user == null)
