@@ -24,9 +24,9 @@ export default function UserForm({
           type="text"
           placeholder="Enter username"
           name="username"
-          value={userData.username}
+          value={userData.name}
           onChange={handleChange}
-          isInvalid={validated && !userData.username}
+          isInvalid={validated && !userData.name}
         />
         <Form.Control.Feedback type="invalid">
           Please enter a username

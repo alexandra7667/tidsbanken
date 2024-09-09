@@ -12,7 +12,7 @@ import { CalendarContext } from "../Dashboard.tsx";
 import { UserContext } from "../../../App.tsx";
 import VacationRequest from "../../../interfaces/VacationRequest.ts";
 import fetchData from "../../../functions/fetchData.ts";
-import { ErrorContext } from "../../Main/Main.tsx";
+import { ErrorContext } from "../../../App.tsx";
 
 export default function Calendar() {
   const { darkMode, year, month } = useContext(CalendarContext);
@@ -26,13 +26,14 @@ export default function Calendar() {
   const [vacationMap, setVacationMap] = useState<mapType>(new Map());
 
   useEffect(() => {
-    createCalendarMonth(year, month, setAllDays);
+    const days = createCalendarMonth(year, month);
+    setAllDays(days);
   }, [month, year]);
 
   useEffect(() => {
     async function fetchVacationRequests() {
       const response = await fetchData(
-        `request/getAllRequests`,
+        `request`,
         "GET",
         null,
         "Failed to get vacation requests."

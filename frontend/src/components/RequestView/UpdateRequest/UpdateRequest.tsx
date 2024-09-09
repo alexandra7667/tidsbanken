@@ -3,7 +3,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 // import updateRequest from "./Update";
 import VacationRequest from "../../../interfaces/VacationRequest";
 import fetchData from "../../../functions/fetchData";
-import { ErrorContext } from "../../Main/Main";
+import { ErrorContext } from "../../../App.tsx";
 
 interface UpdateRequestProps {
   request: VacationRequest;

@@ -75,7 +75,7 @@ function Dashboard() {
       <CreateRequest type={'vacationRequest'}/>
 
       {user!.role === 'admin' && (
-        <CreateRequest type={'ieligiblePeriod'}/>
+        <CreateRequest type={'ineligiblePeriod'}/>
       )}
 
       <Calendar />

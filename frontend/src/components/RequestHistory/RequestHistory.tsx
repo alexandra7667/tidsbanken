@@ -1,11 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import getRequestHistory from "./GetRequestHistory";
 import RequestList from "./RequestList/RequestList";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
-import { Col, Container, Row } from "react-bootstrap";
 import fetchData from "../../functions/fetchData";
 import VacationRequest from "../../interfaces/VacationRequest";
-import { ErrorContext } from "../Main/Main";
+import { ErrorContext } from "../../App.tsx";
 import { UserContext } from "../../App";
 
 export default function RequestHistory() {
@@ -14,11 +12,11 @@ export default function RequestHistory() {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    // getRequestHistory(setRequestHistory);
     async function fetchRequestHistoryData() {
+      console.log("request history says user is ", user)
       const response = await fetchData(
         `user/${user!.id}/requests`,
-        "POST",
+        "GET",
         null,
         "Failed to get user's request history."
       );

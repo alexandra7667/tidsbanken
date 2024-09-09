@@ -1,8 +1,7 @@
 import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
-import updateEmail from "./UpdateEmail";
 import { UserContext } from "../../../App";
-import { ErrorContext } from "../../Main/Main.tsx";
+import { ErrorContext } from "../../../App.tsx";
 import fetchData from "../../../functions/fetchData.ts";
 
 export default function EmailForm({ email }: { email: string }) {

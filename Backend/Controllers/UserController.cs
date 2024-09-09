@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Backend.Models;
-using Backend.Repositories;
-using System.Threading.Tasks;
-using Backend.Payloads;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Backend.DTOs;
+using Backend.Models;
+using Backend.Payloads;
+using Backend.Repositories;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Backend.Controllers
 {
     public static class UserApi
@@ -29,22 +30,18 @@ namespace Backend.Controllers
             return TypedResults.Ok(users);
         }
 
-        public static async Task<IResult> getUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user)
+        public static async Task<IResult> getUser(
+            [FromServices] IUserRepository userRepository,
+            ClaimsPrincipal user
+        )
         {
-            //Ska bara kolla vad det här är
-            foreach (Claim claim in user.Claims)
-            {
-                Console.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
-            }
-
             //Returns 303 See Other with the location header set to the URL of the currently authenticated user’s profile
-            //Replace JSON request body ClaimsPrincipal user (JWT) with cookie 
+            //Replace JSON request body ClaimsPrincipal user (JWT) with cookie
 
             string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Console.Write("user id: " + userId);
             string? userRoleString = user.FindFirst(ClaimTypes.Role)?.Value;
             Console.Write("user role: " + userRoleString);
-
 
             // Check if the userId and userRoleString are not null
             if (userId == null || userRoleString == null)
@@ -73,8 +70,12 @@ namespace Backend.Controllers
             UserDTO userDTO = new UserDTO(foundUser);
             return TypedResults.Ok(userDTO);
         }
-        
-        public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user, [FromBody] AddUserPayload payload)
+
+        public static async Task<IResult> registerUser(
+            [FromServices] IUserRepository userRepository,
+            ClaimsPrincipal user,
+            [FromBody] AddUserPayload payload
+        )
         {
             // Debugging logs
             Console.WriteLine("Starting registerUser method");
@@ -82,7 +83,7 @@ namespace Backend.Controllers
             // Get the admin ID from the claims
             string? adminIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Console.WriteLine("User: " + user);
-            
+
             foreach (var claim in user.Claims)
             {
                 Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
@@ -121,8 +122,10 @@ namespace Backend.Controllers
             }
         }
 
-
-        public static async Task<IResult> getUserById([FromServices] IUserRepository userRepository, int userId)
+        public static async Task<IResult> getUserById(
+            [FromServices] IUserRepository userRepository,
+            int userId
+        )
         {
             User? user = await userRepository.GetUserById(userId);
 
@@ -136,7 +139,11 @@ namespace Backend.Controllers
             return TypedResults.Ok(userDTO);
         }
 
-        public static async Task<IResult> updateEmail([FromServices] IUserRepository userRepository, [FromBody] UpdateEmailPayload payload, int userId)
+        public static async Task<IResult> updateEmail(
+            [FromServices] IUserRepository userRepository,
+            [FromBody] UpdateEmailPayload payload,
+            int userId
+        )
         {
             User user = await userRepository.GetUserById(userId);
 
@@ -150,7 +157,10 @@ namespace Backend.Controllers
             return TypedResults.Ok(new UserDTO(updatedUser));
         }
 
-        public static async Task<IResult> deleteUser([FromServices] IUserRepository userRepository, int userId)
+        public static async Task<IResult> deleteUser(
+            [FromServices] IUserRepository userRepository,
+            int userId
+        )
         {
             bool isDeleted = await userRepository.DeleteUser(userId);
 
@@ -162,7 +172,10 @@ namespace Backend.Controllers
             return TypedResults.Ok("User deleted successfully.");
         }
 
-        public static async Task<IResult> getUserRequests([FromServices] IUserRepository userRepository, int userId)
+        public static async Task<IResult> getUserRequests(
+            [FromServices] IUserRepository userRepository,
+            int userId
+        )
         {
             User user = await userRepository.GetUserById(userId);
 
@@ -172,12 +185,17 @@ namespace Backend.Controllers
             }
 
             List<VacationRequest> requests = user.VacationRequests;
-            List<VacationRequestDTO> vacationRequestDtos = requests.Select(vacationRequest => new VacationRequestDTO(vacationRequest)).ToList();
-
+            List<VacationRequestDTO> vacationRequestDtos = requests
+                .Select(vacationRequest => new VacationRequestDTO(vacationRequest))
+                .ToList();
             return TypedResults.Ok(vacationRequestDtos);
         }
 
-        public static async Task<IResult> updatePassword([FromServices] IUserRepository userRepository, [FromBody] UpdatePasswordPayload payload, int userId)
+        public static async Task<IResult> updatePassword(
+            [FromServices] IUserRepository userRepository,
+            [FromBody] UpdatePasswordPayload payload,
+            int userId
+        )
         {
             User user = await userRepository.GetUserById(userId);
 

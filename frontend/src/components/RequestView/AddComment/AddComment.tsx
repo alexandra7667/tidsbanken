@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import Comment from "../../../interfaces/Comment";
 import { UserContext } from "../../../App";
 import fetchData from "../../../functions/fetchData";
-import { ErrorContext } from "../../Main/Main";
+import { ErrorContext } from "../../../App.tsx";
 
 interface AddCommentProps {
   requestId: string;

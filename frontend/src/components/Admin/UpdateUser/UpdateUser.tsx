@@ -1,20 +1,21 @@
 
 import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
-import { FormEvent, useState } from "react";
-import patchUser from "./PatchUser";
-import getUserById from "./GetUserById";
+import { FormEvent, useContext, useState } from "react";
 import UserForm from "../UserForm";
 import SearchForm from "./SearchForm";
-
-const user = { username: "tom", password: "password", email: "t@t.com" };
+import fetchData from "../../../functions/fetchData";
+import { UserContext } from "../../../App";
+import { ErrorContext } from "../../../App.tsx";
 
 export default function UpdateUser({ closeUpdateUser }) {
+  const { user } = useContext(UserContext);
+  const { setErrorMessage } = useContext(ErrorContext);
   const [userData, setUserData] = useState({
     userId: "",
-    username: user.username,
+    name: "",
     password: "",
-    email: user.email,
+    email: "",
   });
   const [validated, setValidated] = useState<boolean>(false);
   const [foundUser, setFoundUser] = useState(false);
@@ -27,7 +28,7 @@ export default function UpdateUser({ closeUpdateUser }) {
       e.stopPropagation();
     } else {
       console.log("Form data: ", userData);
-      patchUser(userData);
+      patchUser();
     }
 
     //Show valid/invalid feedback
@@ -37,8 +38,46 @@ export default function UpdateUser({ closeUpdateUser }) {
   const searchUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    getUserById(userData.userId, setUserData, setFoundUser);
+    getUserById();
   };
+
+    async function getUserById() {
+      const response = await fetchData(
+        `user/id?userId=${userData.userId}`,
+        "GET",
+        null,
+        "Could not fetch user by ID."
+      );
+      if (response.status === "error") {
+        console.error(response.message);
+        if (response.message) setErrorMessage(response.message);
+      } else {
+        //Token success
+        //Blanka input fields
+        setUserData(response.data);
+        setFoundUser(true);
+      }
+    }
+
+    async function patchUser() {
+      //Uppdatera email eller password
+      const response = await fetchData(
+        `user/${userData.userId}`,
+        "PATCH",
+        { username: userData.name, password: userData.password, email: userData.email },
+        "Could not update user."
+      );
+      if (response.status === "error") {
+        console.error(response.message);
+        if (response.message) setErrorMessage(response.message);
+      } else {
+        //Token success
+        //Blanka input fields
+        setUserData(response.data);
+        setFoundUser(true);
+        closeUpdateUser();
+      }
+    }
 
   return (
     <>

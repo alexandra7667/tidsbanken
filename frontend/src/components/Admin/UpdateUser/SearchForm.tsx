@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 export default function SearchForm({ userData, setUserData, searchUser }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

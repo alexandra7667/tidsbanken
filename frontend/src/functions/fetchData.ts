@@ -4,8 +4,9 @@ export default async function fetchData(url: string, method: string, body: Recor
   const token = localStorage.getItem("token");
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer: ${token}`,
+    Authorization: `Bearer ${token}`,
   };
+
   try {
     const fetchResponse = await fetch(
       `${backendUrl}/${url}`,
@@ -15,6 +16,7 @@ export default async function fetchData(url: string, method: string, body: Recor
         body: body ? JSON.stringify(body) : undefined,
     }
     );
+
     if (fetchResponse.status !== 200 && fetchResponse.status !== 201) {
       throw new Error(
         `${errorMessage} Status: ${fetchResponse.status}`
