@@ -66,7 +66,12 @@ namespace Backend.Controllers
 
             var locationUrl = $"http://localhost:4000/profile/{userId}";
 
-            return Results.Redirect(locationUrl, permanent: false);
+            // return Results.Redirect(locationUrl, permanent: false);
+
+            //Return user
+            User? foundUser = await userRepository.GetUserById(int.Parse(userId));
+            UserDTO userDTO = new UserDTO(foundUser);
+            return TypedResults.Ok(userDTO);
         }
         
         public static async Task<IResult> registerUser([FromServices] IUserRepository userRepository, ClaimsPrincipal user, [FromBody] AddUserPayload payload)

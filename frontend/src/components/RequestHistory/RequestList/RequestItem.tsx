@@ -1,8 +1,12 @@
-
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import VacationRequest from "../../../interfaces/VacationRequest";
 
-export default function RequestItem({ request }) {
+interface RequestItemProps {
+  request: VacationRequest;
+}
+
+export default function RequestItem({ request }: RequestItemProps) {
   const navigate = useNavigate();
 
   const goToRequestView = () => {
@@ -12,9 +16,9 @@ export default function RequestItem({ request }) {
   return (
     <Card style={{ width: "18rem" }}>
       <Card.Body>
-        <Card.Title>{request.status}</Card.Title>
+        <Card.Title>{request.isApproved}</Card.Title>
         <Card.Text>
-          {request.periodStart} - {request.periodEnd}
+          {request.startDate.toString()} - {request.endDate.toString()}
         </Card.Text>
         <Button variant="outline-primary" onClick={goToRequestView}>View request</Button>
       </Card.Body>

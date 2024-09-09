@@ -1,14 +1,12 @@
 import VacationRequest from "../../../interfaces/VacationRequest";
 
 export default function setList(
-  fetchedVacationRequests: VacationRequest[],
-  setVisibleVacationRequests: React.Dispatch<React.SetStateAction<VacationRequest[] | undefined>>,
+  vacationRequests: VacationRequest[],
   userId: string,
-
 ) {
   const requests = [];
 
-  for (const vacationRequest of fetchedVacationRequests) {
+  for (const vacationRequest of vacationRequests) {
     if (vacationRequest.isApproved === 'APPROVED') {
         requests.push(vacationRequest);
     } else if (vacationRequest.userId === userId) {
@@ -16,5 +14,5 @@ export default function setList(
     }
   }
 
-  setVisibleVacationRequests(requests);
+  return requests;
 }

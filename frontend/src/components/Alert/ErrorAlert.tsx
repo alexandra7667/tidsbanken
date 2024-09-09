@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Alert from "react-bootstrap/Alert";
+import { ErrorContext } from "../Main/Main";
 
-interface ErrorAlertProps {
-  errorMessage: string;
-}
-
-export default function ErrorAlert({ errorMessage }: ErrorAlertProps) {
+export default function ErrorAlert() {
   const [show, setShow] = useState<boolean>(true);
+  const { errorMessage, setErrorMessage} = useContext(ErrorContext);
 
   useEffect(() => {
-    setTimeout(() => setShow(false), 5000);
+    const timeoutId = setTimeout(() => {
+      setShow(false);
+      setErrorMessage('');
+    }, 5000);
+  
+    return () => clearTimeout(timeoutId); // Cleanup on unmount
   }, []);
 
   return (

@@ -1,20 +1,27 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import postComment from "./PostComment";
+// import postComment from "./PostComment";
 import Comment from "../../../interfaces/Comment";
+import { UserContext } from "../../../App";
+import fetchData from "../../../functions/fetchData";
+import { ErrorContext } from "../../Main/Main";
 
 interface AddCommentProps {
-  userId: string;
   requestId: string;
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-export default function AddComment({userId, requestId, setComments}: AddCommentProps) {
+export default function AddComment({
+  requestId,
+  setComments,
+}: AddCommentProps) {
+  const { user } = useContext(UserContext);
+  const { setErrorMessage } = useContext(ErrorContext);
   const [newComment, setNewComment] = useState<Comment>({
-    id: '',
-    userId: userId,
+    id: "",
+    userId: user!.id,
     requestId: requestId,
-    comment: "",
+    content: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +34,23 @@ export default function AddComment({userId, requestId, setComments}: AddCommentP
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("New comment: ", newComment);
-    postComment(newComment, setComments);
+    // postComment(newComment, setComments);
+    postComment();
   };
+
+  async function postComment() {
+    const response = await fetchData(
+      `request/${requestId}/comment`,
+      "POST",
+      {requestId: requestId, userId: newComment.userId, content: newComment.content},
+      "Failed to create new comment."
+    );
+    if (response.status === "error" && response.message) {
+      setErrorMessage(response.message);
+    } else {
+      setComments((prevComments) => [...prevComments, response.data]);
+    }
+  }
 
   return (
     <Form noValidate onSubmit={handleSubmit}>
@@ -37,7 +59,7 @@ export default function AddComment({userId, requestId, setComments}: AddCommentP
         <Form.Control
           type="text"
           name="comment"
-          value={newComment.comment}
+          value={newComment.content}
           onChange={handleChange}
         />
       </Form.Group>

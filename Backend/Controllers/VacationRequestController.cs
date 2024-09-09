@@ -20,7 +20,7 @@ namespace Backend.Controllers
             requestGroup.MapDelete("/{requestId}", deleteRequest);
         }
 
-        public static async Task<IResult> getAllRequests([FromServices] IVacationRequestRepository requestRepository)
+        public static async Task<IResult> getAllRequests([FromServices] IVacationRequestRepository requestRepository, ClaimsPrincipal user)
         {
             IEnumerable<VacationRequest>? requests = await requestRepository.GetAllRequests();
 

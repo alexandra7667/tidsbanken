@@ -5,15 +5,15 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginUser from "./LoginUser.ts";
 import { UserContext } from "../../App.tsx";
-import ErrorAlert from "../Alert/ErrorAlert.tsx";
+import { ErrorContext } from "../Main/Main.tsx";
+import fetchData from "../../functions/fetchData.ts";
 
 export default function Login() {
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState<boolean>(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  const [loginError, setLoginError] = useState<boolean>(false);
-  const [networkError, setNetworkError] = useState<boolean>(false);
+  const { setErrorMessage } = useContext(ErrorContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginData({
@@ -24,22 +24,35 @@ export default function Login() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoginError(false);
-    setNetworkError(false);
+    setErrorMessage("");
 
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
-    } 
-    else {
-      console.log("Login form data: ", loginData);
-      loginUser(loginData, navigate, setUser, setLoginError, setNetworkError);
+    } else {
+      loginAndSetUser();
     }
 
     //Show valid/invalid feedback
     setValidated(true);
   };
 
+  async function loginAndSetUser() {
+    const response = await fetchData(
+      `login`,
+      "POST",
+      { email: loginData.email, password: loginData.password },
+      "Wrong email or password."
+    );
+    if (response.status === "error") {
+      console.error(response.message);
+      if (response.message) setErrorMessage(response.message);
+    } else {
+      localStorage.setItem("token", response.data.token);
+      setUser(response.data.userDTO);
+      navigate("/dashboard");
+    }
+  }
 
   return (
     <Container>
@@ -52,20 +65,19 @@ export default function Login() {
       <Row className="justify-content-center">
         <Col xs={12} sm={10} md={6} lg={4}>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            
-            <Form.Group className="mb-3" controlId="formUsername">
-              <Form.Label>Username</Form.Label>
+            <Form.Group className="mb-3" controlId="formEmail">
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 required
                 type="text"
-                placeholder="Enter username"
-                name="username" 
-                value={loginData.username}
+                placeholder="Enter email"
+                name="email"
+                value={loginData.email}
                 onChange={handleChange}
-                isInvalid={validated && !loginData.username}
+                isInvalid={validated && !loginData.email}
               />
               <Form.Control.Feedback type="invalid">
-                Please enter your username
+                Please enter your email
               </Form.Control.Feedback>
             </Form.Group>
 
@@ -75,7 +87,7 @@ export default function Login() {
                 required
                 type="password"
                 placeholder="Enter password"
-                name="password" 
+                name="password"
                 value={loginData.password}
                 onChange={handleChange}
                 isInvalid={validated && !loginData.password}
@@ -89,13 +101,6 @@ export default function Login() {
           </Form>
         </Col>
       </Row>
-      <br />
-      {loginError && (
-        <ErrorAlert errorMessage="Wrong email or password" />
-      )}
-      {networkError && (
-        <ErrorAlert errorMessage="Network error" />
-      )}
     </Container>
   );
 }

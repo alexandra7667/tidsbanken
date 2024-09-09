@@ -28,7 +28,7 @@ const defaultCalendarContext: CalendarContextType = {
 
 const CalendarContext = createContext<CalendarContextType>(defaultCalendarContext);
 
-export default function Dashboard() {
+function Dashboard() {
   const { user } = useContext(UserContext);
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -83,4 +83,4 @@ export default function Dashboard() {
   );
 }
 
-export { CalendarContext };
+export { Dashboard, CalendarContext };

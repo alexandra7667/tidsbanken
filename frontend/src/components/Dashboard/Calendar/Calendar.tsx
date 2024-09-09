@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { weekDays } from "../../../assets/strings/weekdays";
 import "./Calendar.css";
-import Cell from "./Cell";
+import Cell from "./Cell/Cell.tsx";
 import createCalendarMonth from "./CreateCalendar";
-import getAllVacationRequests from "./GetAllVacationRequests";
+// import getAllVacationRequests from "./GetAllVacationRequests";
 import setList from "./SetList";
 import getDatesBetween from "./GetDatesBetween";
 import matchDays from "./MatchDays";
@@ -11,11 +11,15 @@ import matchDays from "./MatchDays";
 import { CalendarContext } from "../Dashboard.tsx";
 import { UserContext } from "../../../App.tsx";
 import VacationRequest from "../../../interfaces/VacationRequest.ts";
+import fetchData from "../../../functions/fetchData.ts";
+import { ErrorContext } from "../../Main/Main.tsx";
 
 export default function Calendar() {
   const { darkMode, year, month } = useContext(CalendarContext);
   const { user } = useContext(UserContext);
+  const { setErrorMessage } = useContext(ErrorContext);
   const [allDays, setAllDays] = useState<number[]>();
+  const [vacationRequests, setVacationRequests] = useState<VacationRequest[]>();
   const [visibleVacationRequests, setVisibleVacationRequests] = useState<VacationRequest[]>();
   type mapType = Map<Date, string[]>;
   const vacationMapFiller: mapType = new Map();
@@ -26,14 +30,33 @@ export default function Calendar() {
   }, [month, year]);
 
   useEffect(() => {
-    const fetchVacationRequests = async () => {
-      const fetchedVacationRequests = await getAllVacationRequests();
-      // console.log("mock data: ", data);
-      setList(fetchedVacationRequests, setVisibleVacationRequests, user!.id);
-    };
+    async function fetchVacationRequests() {
+      const response = await fetchData(
+        `request/getAllRequests`,
+        "GET",
+        null,
+        "Failed to get vacation requests."
+      );
+      if (response.status === "error" && response.message) {
+        setErrorMessage(response.message);
+      } else {
+        setVacationRequests(response.data);
+      }
+    }
 
     fetchVacationRequests();
   }, []);
+
+  useEffect(() => {
+    async function setVisibleRequests() {
+      if(vacationRequests && vacationRequests.length > 0) {
+        const response = setList(vacationRequests, user!.id);
+        setVisibleVacationRequests(response);
+      }
+    }
+
+    setVisibleRequests();
+  }, [vacationRequests]);
 
   useEffect(() => {
     if (visibleVacationRequests && visibleVacationRequests.length > 0) {
