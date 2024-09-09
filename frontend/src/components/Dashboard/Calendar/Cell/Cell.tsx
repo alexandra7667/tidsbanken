@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import "./Calendar.css";
-import { CalendarContext } from "../Dashboard";
+import "../Calendar.css";
+import { CalendarContext } from "../../Dashboard";
+import { useNavigate } from "react-router-dom";
 
 interface CellProps {
   day: number,
@@ -13,6 +14,7 @@ export default function Cell({
   allUserIds,
 }: CellProps) {
   const { month, year, startPicker, startDate, setStartDate, endDate, setEndDate} = useContext(CalendarContext);
+  const navigate = useNavigate();
   const [request, setRequest] = useState(false);
   const [picked, setPicked] = useState(false);
 
@@ -29,6 +31,7 @@ export default function Cell({
 
     if (day == null) return; //Clicked on empty cell
 
+    //Green color effect on click
     setPicked(true);
     setTimeout(() => {
       setPicked(false);
@@ -67,9 +70,7 @@ export default function Cell({
                     {allUserIds.map((userId, index) => (
                       <Dropdown.Item
                         key={index}
-                        onClick={() =>
-                          console.log("go to history of user id", userId)
-                        }
+                        onClick={() => navigate(`/requesthistory/${userId}`)}
                       >
                         {userId}
                       </Dropdown.Item>

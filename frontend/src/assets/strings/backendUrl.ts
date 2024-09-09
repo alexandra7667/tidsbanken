@@ -1,1 +1,1 @@
-export const backendUrl = "http://localhost:8080"; //Without Docker port 5285
+export const backendUrl = "http://localhost:5285"; //Without Docker port 5285, With Docker port 8080

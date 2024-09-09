@@ -1,20 +1,27 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import updateRequest from "./Update";
-import Request from "../../../interfaces/Request";
+// import updateRequest from "./Update";
+import VacationRequest from "../../../interfaces/VacationRequest";
+import fetchData from "../../../functions/fetchData";
+import { ErrorContext } from "../../Main/Main";
 
 interface UpdateRequestProps {
-  request: Request;
+  request: VacationRequest;
   modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
 }
 
-export default function UpdateRequest({ request, modalOpen, setModalOpen }: UpdateRequestProps) {
+export default function UpdateRequest({
+  request,
+  modalOpen,
+  setModalOpen,
+}: UpdateRequestProps) {
   const [updatedFields, setUpdatedFields] = useState({
-    title: request.title,
-    startDate: request.startDate,
-    endDate: request.endDate,
+    description: request.description,
+    startDate: request.startDate.toString(),
+    endDate: request.endDate.toString(),
   });
+  const { setErrorMessage } = useContext(ErrorContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,8 +35,23 @@ export default function UpdateRequest({ request, modalOpen, setModalOpen }: Upda
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Request fields: ", updatedFields);
-    updateRequest(request.id, updatedFields);
+    // updateRequest(request.id, updatedFields);
+    updateRequest();
   };
+
+  async function updateRequest() {
+    const response = await fetchData(
+      `request/${request.id}`,
+      "PATCH",
+      null,
+      "Failed to update vacation request."
+    );
+    if (response.status === "error" && response.message) {
+      setErrorMessage(response.message);
+    } else {
+      setModalOpen(false);
+    }
+  }
 
   return (
     <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
@@ -39,12 +61,12 @@ export default function UpdateRequest({ request, modalOpen, setModalOpen }: Upda
 
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formTitle">
+          <Form.Group className="mb-3" controlId="formDescription">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
-              name="title"
-              value={updatedFields.title}
+              name="description"
+              value={updatedFields.description}
               onChange={handleChange}
             />
           </Form.Group>

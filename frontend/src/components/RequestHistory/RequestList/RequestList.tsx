@@ -1,19 +1,16 @@
-import Request from "../../../interfaces/Request";
+import VacationRequest from "../../../interfaces/VacationRequest";
 import RequestItem from "./RequestItem";
 
 interface RequestListProps {
-  requests: Request[];
-  hasFullView: boolean;
+  requests: VacationRequest[];
 }
 
-export default function RequestList({ requests, hasFullView }: RequestListProps) {
+export default function RequestList({ requests }: RequestListProps) {
   return (
     <>
       {requests
-        .slice()
-        .reverse()
-        .map((request: Request, index: number) => (
-          (request.status === 'approved' || hasFullView) && (
+        .map((request, index) => (
+          (request.isApproved === 'APPROVED') && (
             <RequestItem key={index} request={request} />
           )
         ))}

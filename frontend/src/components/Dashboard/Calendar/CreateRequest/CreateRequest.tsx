@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import postRequest from "./PostRequest";
-import postIneligiblePeriod from "./PostIneligiblePeriod";
+// import postRequest from "./PostRequest";
+// import postIneligiblePeriod from "./PostIneligiblePeriod";
 import { CalendarContext } from "../../Dashboard.tsx";
 import { UserContext } from "../../../../App.tsx";
 import VacationRequest from "../../../../interfaces/VacationRequest.ts";
+import { ErrorContext } from "../../../Main/Main.tsx";
+import fetchData from "../../../../functions/fetchData.ts";
 
 export default function CreateRequest({ type }: { type: string }) {
+  const { setErrorMessage } = useContext(ErrorContext);
   const [showCreate, setShowCreate] = useState(true);
   const [showDates, setShowDates] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
@@ -20,21 +23,21 @@ export default function CreateRequest({ type }: { type: string }) {
   } = useContext(CalendarContext);
   const { user } = useContext(UserContext);
   const [requestData, setRequestData] = useState<VacationRequest>({
-    id: '',
-  startDate: Date,
-  endDate: Date,
-  description: '',
-  isApproved: '',
-  userId: user!.id,
+    id: "",
+    startDate: new Date(),
+    endDate: new Date(),
+    description: "",
+    isApproved: "",
+    userId: user!.id,
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRequestData((prevData) => ({
       ...prevData,
       description: event.target.value,
-    }))
+    }));
   };
-  
+
   const setStart = () => {
     setStartPicker(true);
   };
@@ -51,13 +54,43 @@ export default function CreateRequest({ type }: { type: string }) {
 
   const submitRequest = () => {
     if (type === "vacationRequest") {
-      postRequest(requestData);
+      // postRequest(requestData);
+      postRequest();
     } else if (type === "ineligiblePeriod") {
-      postIneligiblePeriod(requestData);
+      // postIneligiblePeriod(requestData);
+      postIneligiblePeriod();
     }
     console.log("submitting request: " + startDate + " - " + endDate);
     blankRequest();
   };
+
+  async function postRequest() {
+    const response = await fetchData(
+      `request`,
+      "POST",
+      {userId: requestData.userId, startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString(), description: requestData.description},
+      "Failed to create vacation request."
+    );
+    if (response.status === "error" && response.message) {
+      setErrorMessage(response.message);
+    } else {
+      //Toast new request created successfully
+    }
+  }
+
+  async function postIneligiblePeriod() {
+    const response = await fetchData(
+      `ineligible`,
+      "POST",
+      {startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString()},
+      "Failed to create new ineligible period."
+    );
+    if (response.status === "error" && response.message) {
+      setErrorMessage(response.message);
+    } else {
+      //Toast new ineligible period created successfully
+    }
+  }
 
   const blankRequest = () => {
     setShowDates(false);
@@ -93,7 +126,7 @@ export default function CreateRequest({ type }: { type: string }) {
               <Form.Label>Description:</Form.Label>
               <Form.Control
                 type="text"
-                value={description}
+                value={requestData.description}
                 onChange={handleInputChange}
               />
             </Form.Group>

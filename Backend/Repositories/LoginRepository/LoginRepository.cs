@@ -25,6 +25,8 @@ namespace backend.Repositories
         {
             User? user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
+            Console.WriteLine("IN REPO. USER=", user);
+
             if (user == null)
             {
                 Console.WriteLine("User not found");
