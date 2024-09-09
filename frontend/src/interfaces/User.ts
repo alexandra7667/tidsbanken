@@ -1,10 +1,9 @@
 export default interface User {
     token: string;
-    id: string;
+    id: number;
     name: string;
     email: string;
     profilePicture: string;
-    role: string;
+    role: number;
     darkMode: boolean;
   }
-  

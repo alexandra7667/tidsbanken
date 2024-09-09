@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import Password from "../../../interfaces/Password";
 import fetchData from "../../../functions/fetchData";
 import { UserContext } from "../../../App";
-import { ErrorContext } from "../../Main/Main";
+import { ErrorContext } from "../../../App.tsx"
 
 export default function PasswordForm() {
   const [password, setPassword] = useState<Password>({

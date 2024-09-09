@@ -5,7 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import { CalendarContext } from "../../Dashboard.tsx";
 import { UserContext } from "../../../../App.tsx";
 import VacationRequest from "../../../../interfaces/VacationRequest.ts";
-import { ErrorContext } from "../../../Main/Main.tsx";
+import { ErrorContext } from "../../../../App.tsx";
 import fetchData from "../../../../functions/fetchData.ts";
 
 export default function CreateRequest({ type }: { type: string }) {

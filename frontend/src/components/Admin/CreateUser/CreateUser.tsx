@@ -1,10 +1,13 @@
 import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
-import { FormEvent, useState } from "react";
-import postUser from "./PostUser";
+import { FormEvent, useContext, useState } from "react";
+// import postUser from "./PostUser";
 import UserForm from "../UserForm";
+import fetchData from "../../../functions/fetchData";
+import { ErrorContext } from "../../../App.tsx";
 
 export default function CreateUser({ closeCreateNewUser }) {
+  const { setErrorMessage } = useContext(ErrorContext);
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -20,12 +23,30 @@ export default function CreateUser({ closeCreateNewUser }) {
       e.stopPropagation();
     } else {
       console.log("Form data: ", userData);
-      postUser(userData);
+      // postUser(userData);
+      postUser();
     }
 
     //Show valid/invalid feedback
     setValidated(true);
   };
+
+  async function postUser() {
+    const response = await fetchData(
+      `user`,
+      "POST",
+      { username: userData.username, password: userData.password, email: userData.email },
+      "Could not create new user."
+    );
+    if (response.status === "error") {
+      console.error(response.message);
+      if (response.message) setErrorMessage(response.message);
+    } else {
+      //Token success
+      //Blanka input fields
+      closeCreateNewUser();
+    }
+  }
 
   return (
     <>

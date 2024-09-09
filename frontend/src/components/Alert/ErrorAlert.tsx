@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Alert from "react-bootstrap/Alert";
-import { ErrorContext } from "../Main/Main";
+import { ErrorContext } from "../../App.tsx";
 
 export default function ErrorAlert() {
   const [show, setShow] = useState<boolean>(true);

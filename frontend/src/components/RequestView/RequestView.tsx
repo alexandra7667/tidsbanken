@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import getSingleRequest from "./GetSingleRequest";
-// import getComments from "./GetComments";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-// import deleteRequest from "./DeleteRequest";
 import UpdateRequest from "./UpdateRequest/UpdateRequest";
 import AddComment from "./AddComment/AddComment";
 import RequestDetails from "./RequestDetails/RequestDetails";
@@ -13,7 +10,7 @@ import { UserContext } from "../../App";
 import VacationRequest from "../../interfaces/VacationRequest";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 import fetchData from "../../functions/fetchData";
-import { ErrorContext } from "../Main/Main";
+import { ErrorContext } from "../../App.tsx"
 
 export default function RequestView() {
   const navigate = useNavigate();
@@ -26,10 +23,6 @@ export default function RequestView() {
 
   useEffect(() => {
     if (requestId) {
-      //Fetch request details
-      // getSingleRequest(requestId, setRequest);
-      //Fetch all comments
-      // getComments(requestId, setComments);
       getRequest();
       getComments();
     }

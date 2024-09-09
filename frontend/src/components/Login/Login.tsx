@@ -3,9 +3,8 @@ import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginUser from "./LoginUser.ts";
 import { UserContext } from "../../App.tsx";
-import { ErrorContext } from "../Main/Main.tsx";
+import { ErrorContext } from "../../App.tsx"
 import fetchData from "../../functions/fetchData.ts";
 
 export default function Login() {
