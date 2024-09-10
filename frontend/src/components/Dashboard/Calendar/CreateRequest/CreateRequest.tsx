@@ -64,10 +64,17 @@ export default function CreateRequest({ type }: { type: string }) {
     const response = await fetchData(
       `request`,
       "POST",
-      {userId: requestData.userId, startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString(), description: requestData.description},
+      {
+        userId: requestData.userId,
+        startDate: requestData.startDate.toISOString(),
+        endDate: requestData.endDate.toISOString(),
+        description: requestData.description
+      },
       "Failed to create vacation request."
     );
     if (response.status === "error" && response.message) {
+      console.log({ userId: requestData.userId, startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString(), description: requestData.description });
+
       setErrorMessage(response.message);
     } else {
       //Toast new request created successfully
@@ -78,7 +85,7 @@ export default function CreateRequest({ type }: { type: string }) {
     const response = await fetchData(
       `ineligible`,
       "POST",
-      {startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString()},
+      { startDate: requestData.startDate.toString(), endDate: requestData.endDate.toString() },
       "Failed to create new ineligible period."
     );
     if (response.status === "error" && response.message) {
@@ -119,14 +126,14 @@ export default function CreateRequest({ type }: { type: string }) {
           </Button>
           {type === "vacationRequest" && (
             <div className="d-flex justify-content-center mt-1">
-            <Form.Group>
-              <Form.Label>Description:</Form.Label>
-              <Form.Control
-                type="text"
-                value={requestData.description}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label>Description:</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={requestData.description}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
             </div>
           )}
         </div>

@@ -40,17 +40,32 @@ export default function Calendar() {
       if (response.status === "error" && response.message) {
         setErrorMessage(response.message);
       } else {
-        setVacationRequests(response.data);
+        // Convert startDate and endDate from ISO strings to Date objects with time set to midnight
+        const updatedData = response.data.map((request) => {
+          const startDate = new Date(request.startDate);
+          startDate.setHours(0, 0, 0, 0); // Set to midnight
+          const endDate = new Date(request.endDate);
+          endDate.setHours(0, 0, 0, 0); // Set to midnight
+  
+          // Return the updated request with Date objects
+          return {
+            ...request,
+            startDate,
+            endDate,
+          };
+        });
+  
+        setVacationRequests(updatedData);
       }
     }
-
+  
     fetchVacationRequests();
   }, []);
 
   useEffect(() => {
     async function setVisibleRequests() {
-      if(vacationRequests && vacationRequests.length > 0) {
-        const response = setList(vacationRequests, user!.id);
+      if (vacationRequests && vacationRequests.length > 0) {
+        const response = await setList(vacationRequests, user!.id);
         setVisibleVacationRequests(response);
       }
     }
@@ -59,6 +74,8 @@ export default function Calendar() {
   }, [vacationRequests]);
 
   useEffect(() => {
+    console.log(visibleVacationRequests);
+    
     if (visibleVacationRequests && visibleVacationRequests.length > 0) {
       for (const request of visibleVacationRequests) {
         getDatesBetween(request, vacationMapFiller);
@@ -74,17 +91,9 @@ export default function Calendar() {
           {day}
         </div>
       ))}
-      {vacationMap.size > 0 &&
-        allDays!.map((day, index) => {
-          const { allUserIds } = matchDays(day, month, year, vacationMap); //All user id:s that have this day approved for vacation
-          return (
-            <Cell
-              key={index}
-              day={day}
-              allUserIds={allUserIds}
-            />
-          );
-        })}
+      {allDays && allDays.map((day, index) => (
+        <Cell key={index} day={day} allUserIds={matchDays(day, month, year, vacationMap).allUserIds} />
+      ))}
     </div>
   );
 }
