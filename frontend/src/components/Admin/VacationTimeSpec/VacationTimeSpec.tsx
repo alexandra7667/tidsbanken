@@ -1,14 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import getVacationDays from "./GetVacationDays";
-import updateVacationDays from "./UpdateVacationDays";
 
 export default function VacationTimeSpec({ closeMaxDays }) {
   const [validated, setValidated] = useState<boolean>(false);
   const [maxDays, setMaxDays] = useState("");
 
   useEffect(() => {
-    getVacationDays(setMaxDays);
+    // getVacationDays(setMaxDays);
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +21,7 @@ export default function VacationTimeSpec({ closeMaxDays }) {
       e.stopPropagation();
     } else {
       //Post new max days
-      updateVacationDays(maxDays);
+      // updateVacationDays(maxDays);
     }
 
     //Show valid/invalid feedback

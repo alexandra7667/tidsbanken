@@ -14,8 +14,8 @@ export default function SearchForm({ userData, setUserData, searchUser }) {
           <Form.Control
             type="text"
             placeholder="Search user by id"
-            name="userId"
-            value={userData.userId}
+            name="id"
+            value={userData.id}
             onChange={handleChange}
           />
 

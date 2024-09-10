@@ -75,7 +75,8 @@ namespace backend.Repositories
 
         public async Task<User?> UpdatePassword(User user, string newPassword)
         {
-            user.Password = newPassword;
+            string hashedPassword = PasswordHasher.HashPassword(newPassword);
+            user.Password = hashedPassword;
 
             await _databaseContext.SaveChangesAsync();
 
@@ -85,6 +86,15 @@ namespace backend.Repositories
         public async Task<User?> UpdateEmail(User user, string newEmail)
         {
             user.Email = newEmail;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User?> UpdateName(User user, string newName)
+        {
+            user.Name = newName;
 
             await _databaseContext.SaveChangesAsync();
 

@@ -12,7 +12,7 @@ export default function UpdateUser({ closeUpdateUser }) {
   const { user } = useContext(UserContext);
   const { setErrorMessage } = useContext(ErrorContext);
   const [userData, setUserData] = useState({
-    userId: "",
+    id: "",
     name: "",
     password: "",
     email: "",
@@ -27,7 +27,6 @@ export default function UpdateUser({ closeUpdateUser }) {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      console.log("Form data: ", userData);
       patchUser();
     }
 
@@ -43,7 +42,7 @@ export default function UpdateUser({ closeUpdateUser }) {
 
     async function getUserById() {
       const response = await fetchData(
-        `user/id?userId=${userData.userId}`,
+        `user/${userData.id}`,
         "GET",
         null,
         "Could not fetch user by ID."
@@ -53,18 +52,19 @@ export default function UpdateUser({ closeUpdateUser }) {
         if (response.message) setErrorMessage(response.message);
       } else {
         //Token success
-        //Blanka input fields
         setUserData(response.data);
+        console.log("userData= ", response.data);
         setFoundUser(true);
       }
     }
 
     async function patchUser() {
       //Uppdatera email eller password
+      console.log("Updating user with userData: ", userData);
       const response = await fetchData(
-        `user/${userData.userId}`,
+        `user/${userData.id}`,
         "PATCH",
-        { username: userData.name, password: userData.password, email: userData.email },
+        { name: userData.name, email: userData.email },
         "Could not update user."
       );
       if (response.status === "error") {

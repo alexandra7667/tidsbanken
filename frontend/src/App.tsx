@@ -23,12 +23,14 @@ const ErrorContext = createContext<ErrorContextType>(defaultErrorContext);
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       fetchAndSetUser();
     }
+    setLoading(false);
   }, []);
 
   async function fetchAndSetUser() {
@@ -47,7 +49,7 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <ErrorContext.Provider value={{ errorMessage, setErrorMessage }}>
           <Header />
-          <Main />
+          <Main loading={loading} />
           <Footer />
           {errorMessage !== "" && <ErrorAlert />}
         </ErrorContext.Provider>
