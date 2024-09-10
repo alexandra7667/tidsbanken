@@ -1,4 +1,4 @@
-import VacationRequest from "../../../interfaces/VacationRequest";
+import VacationRequest from "../../../../interfaces/VacationRequest";
 
 export default function getDatesBetween(request: VacationRequest, vacationMapFiller: Map<Date, string[]>) {
   let currentDate = new Date(request.startDate);

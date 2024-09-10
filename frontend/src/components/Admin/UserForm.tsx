@@ -23,7 +23,7 @@ export default function UserForm({
           required
           type="text"
           placeholder="Enter username"
-          name="username"
+          name="name"
           value={userData.name}
           onChange={handleChange}
           isInvalid={validated && !userData.name}

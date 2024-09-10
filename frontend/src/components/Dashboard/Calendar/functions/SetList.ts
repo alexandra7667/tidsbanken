@@ -1,8 +1,8 @@
-import VacationRequest from "../../../interfaces/VacationRequest";
+import VacationRequest from "../../../../interfaces/VacationRequest";
 
 export default function setList(
   vacationRequests: VacationRequest[],
-  userId: string,
+  userId: number,
 ) {
   const requests = [];
 

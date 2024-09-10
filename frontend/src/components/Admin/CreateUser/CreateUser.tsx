@@ -1,7 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import { FormEvent, useContext, useState } from "react";
-// import postUser from "./PostUser";
 import UserForm from "../UserForm";
 import fetchData from "../../../functions/fetchData";
 import { ErrorContext } from "../../../App.tsx";
@@ -9,7 +8,7 @@ import { ErrorContext } from "../../../App.tsx";
 export default function CreateUser({ closeCreateNewUser }) {
   const { setErrorMessage } = useContext(ErrorContext);
   const [userData, setUserData] = useState({
-    username: "",
+    name: "",
     password: "",
     email: "",
   });
@@ -23,7 +22,6 @@ export default function CreateUser({ closeCreateNewUser }) {
       e.stopPropagation();
     } else {
       console.log("Form data: ", userData);
-      // postUser(userData);
       postUser();
     }
 
@@ -35,7 +33,7 @@ export default function CreateUser({ closeCreateNewUser }) {
     const response = await fetchData(
       `user`,
       "POST",
-      { username: userData.username, password: userData.password, email: userData.email },
+      { name: userData.name, password: userData.password, email: userData.email },
       "Could not create new user."
     );
     if (response.status === "error") {
