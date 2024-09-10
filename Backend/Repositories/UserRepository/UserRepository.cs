@@ -90,5 +90,14 @@ namespace backend.Repositories
 
             return user;
         }
+
+        public async Task<User?> UpdateName(User user, string newName)
+        {
+            user.Name = newName;
+
+            await _databaseContext.SaveChangesAsync();
+
+            return user;
+        }
     }
 }

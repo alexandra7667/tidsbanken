@@ -16,11 +16,11 @@ namespace Backend.Controllers
             authGroup.MapGet("/", getUser);
             authGroup.MapGet("/allUSers", getAllUsers); //remove later, only for debugging
             authGroup.MapPost("/", registerUser);
-            authGroup.MapGet("/id", getUserById);
-            authGroup.MapPatch("/id", updateEmail);
-            authGroup.MapDelete("/id", deleteUser);
-            authGroup.MapGet("/id/requests", getUserRequests);
-            authGroup.MapPost("/id/update_password", updatePassword);
+            authGroup.MapGet("/{id}", getUserById);
+            authGroup.MapPatch("/{id}", updateUser);
+            authGroup.MapDelete("/{id}", deleteUser);
+            authGroup.MapGet("/{id}/requests", getUserRequests);
+            authGroup.MapPost("/{id}/update_password", updatePassword);
         }
 
         public static async Task<IResult> getAllUsers([FromServices] IUserRepository userRepository)
@@ -38,13 +38,13 @@ namespace Backend.Controllers
             //Returns 303 See Other with the location header set to the URL of the currently authenticated user’s profile
             //Replace JSON request body ClaimsPrincipal user (JWT) with cookie
 
-            string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Console.Write("user id: " + userId);
+            string? id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.Write("user id: " + id);
             string? userRoleString = user.FindFirst(ClaimTypes.Role)?.Value;
             Console.Write("user role: " + userRoleString);
 
             // Check if the userId and userRoleString are not null
-            if (userId == null || userRoleString == null)
+            if (id == null || userRoleString == null)
             {
                 return TypedResults.Unauthorized();
             }
@@ -61,12 +61,12 @@ namespace Backend.Controllers
                 return TypedResults.Unauthorized();
             }
 
-            var locationUrl = $"http://localhost:4000/profile/{userId}";
+            var locationUrl = $"http://localhost:4000/profile/{id}";
 
             // return Results.Redirect(locationUrl, permanent: false);
 
             //Return user
-            User? foundUser = await userRepository.GetUserById(int.Parse(userId));
+            User? foundUser = await userRepository.GetUserById(int.Parse(id));
             UserDTO userDTO = new UserDTO(foundUser);
             return TypedResults.Ok(userDTO);
         }
@@ -124,10 +124,10 @@ namespace Backend.Controllers
 
         public static async Task<IResult> getUserById(
             [FromServices] IUserRepository userRepository,
-            int userId
+            int id
         )
         {
-            User? user = await userRepository.GetUserById(userId);
+            User? user = await userRepository.GetUserById(id);
 
             if (user == null)
             {
@@ -139,30 +139,45 @@ namespace Backend.Controllers
             return TypedResults.Ok(userDTO);
         }
 
-        public static async Task<IResult> updateEmail(
+        public static async Task<IResult> updateUser(
             [FromServices] IUserRepository userRepository,
-            [FromBody] UpdateEmailPayload payload,
-            int userId
+            [FromBody] UpdatePayload payload,
+            int id
         )
         {
-            User user = await userRepository.GetUserById(userId);
+            User user = await userRepository.GetUserById(id);
 
             if (user == null)
             {
                 return TypedResults.NotFound("User not found");
             }
 
-            User? updatedUser = await userRepository.UpdateEmail(user, payload.Email);
+            User? updatedUser = null;
+
+            if (payload.Email != null)
+            {
+                updatedUser = await userRepository.UpdateEmail(user, payload.Email);
+            }
+
+            if (payload.Name != null)
+            {
+                updatedUser = await userRepository.UpdateName(user, payload.Name);
+            }
+
+            if (updatedUser == null)
+            {
+                return TypedResults.BadRequest("User could not be updated.");
+            }
 
             return TypedResults.Ok(new UserDTO(updatedUser));
         }
 
         public static async Task<IResult> deleteUser(
             [FromServices] IUserRepository userRepository,
-            int userId
+            int id
         )
         {
-            bool isDeleted = await userRepository.DeleteUser(userId);
+            bool isDeleted = await userRepository.DeleteUser(id);
 
             if (!isDeleted)
             {
@@ -174,10 +189,10 @@ namespace Backend.Controllers
 
         public static async Task<IResult> getUserRequests(
             [FromServices] IUserRepository userRepository,
-            int userId
+            int id
         )
         {
-            User user = await userRepository.GetUserById(userId);
+            User user = await userRepository.GetUserById(id);
 
             if (user == null)
             {
@@ -194,10 +209,10 @@ namespace Backend.Controllers
         public static async Task<IResult> updatePassword(
             [FromServices] IUserRepository userRepository,
             [FromBody] UpdatePasswordPayload payload,
-            int userId
+            int id
         )
         {
-            User user = await userRepository.GetUserById(userId);
+            User user = await userRepository.GetUserById(id);
 
             if (user == null)
             {
