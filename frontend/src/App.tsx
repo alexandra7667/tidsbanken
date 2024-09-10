@@ -30,7 +30,9 @@ function App() {
     if (storedToken) {
       fetchAndSetUser();
     }
-    setLoading(false);
+    else {
+      setLoading(false);
+    }
   }, []);
 
   async function fetchAndSetUser() {
@@ -40,6 +42,7 @@ function App() {
       if (response.message) setErrorMessage(response.message);
     } else {
       setUser(response.data);
+      setLoading(false);
       console.log("app says user is ", user);
     }
   }

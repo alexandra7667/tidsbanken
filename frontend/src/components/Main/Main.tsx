@@ -12,17 +12,16 @@ import LoadingSpinner from "../Spinner/LoadingSpinner.tsx";
 export default function Main({loading}) {
   const { user } = useContext(UserContext);
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
 
   return (
     <>
+    {loading ? (
+      <LoadingSpinner />
+    ) : (
       <Routes>
         {!user ? (
           <>
             <Route path="/" element={<Login />} />
-            <Route path="*" element={<Navigate to="/" />} />
           </>
         ) : (
           <>
@@ -38,6 +37,7 @@ export default function Main({loading}) {
           </>
         )}
       </Routes>
+      )}
     </>
   );
 }
