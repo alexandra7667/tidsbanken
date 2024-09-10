@@ -18,7 +18,7 @@ export default function ErrorAlert() {
   return (
     <>
       {show && (
-        <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+        <Alert style={{maxWidth: '50%'}} variant="danger" onClose={() => setShow(false)} dismissible>
           <Alert.Heading>Error</Alert.Heading>
           <p>{errorMessage}</p>
         </Alert>

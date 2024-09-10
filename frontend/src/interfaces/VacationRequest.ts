@@ -4,5 +4,5 @@ export default interface VacationRequest {
   endDate: Date;
   description: string;
   isApproved: string;
-  userId: string;
+  userId: number;
 }

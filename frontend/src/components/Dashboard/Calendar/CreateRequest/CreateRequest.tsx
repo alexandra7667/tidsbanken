@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-// import postRequest from "./PostRequest";
-// import postIneligiblePeriod from "./PostIneligiblePeriod";
 import { CalendarContext } from "../../Dashboard.tsx";
 import { UserContext } from "../../../../App.tsx";
 import VacationRequest from "../../../../interfaces/VacationRequest.ts";
@@ -54,10 +52,8 @@ export default function CreateRequest({ type }: { type: string }) {
 
   const submitRequest = () => {
     if (type === "vacationRequest") {
-      // postRequest(requestData);
       postRequest();
     } else if (type === "ineligiblePeriod") {
-      // postIneligiblePeriod(requestData);
       postIneligiblePeriod();
     }
     console.log("submitting request: " + startDate + " - " + endDate);
@@ -122,6 +118,7 @@ export default function CreateRequest({ type }: { type: string }) {
             End date: {endDate.toLocaleDateString()}
           </Button>
           {type === "vacationRequest" && (
+            <div className="d-flex justify-content-center mt-1">
             <Form.Group>
               <Form.Label>Description:</Form.Label>
               <Form.Control
@@ -130,6 +127,7 @@ export default function CreateRequest({ type }: { type: string }) {
                 onChange={handleInputChange}
               />
             </Form.Group>
+            </div>
           )}
         </div>
       )}
