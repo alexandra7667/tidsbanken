@@ -51,24 +51,6 @@ export default function UserForm({
         </Form.Group>
       )}
 
-      {type === "update" && (
-        <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            required
-            type="password"
-            placeholder="Enter new password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-            isInvalid={validated && !userData.password}
-          />
-          <Form.Control.Feedback type="invalid">
-            Please enter a new password
-          </Form.Control.Feedback>
-        </Form.Group>
-      )}
-
       <Form.Group className="mb-3" controlId="formEmail">
         <Form.Label>Email</Form.Label>
         <Form.Control
