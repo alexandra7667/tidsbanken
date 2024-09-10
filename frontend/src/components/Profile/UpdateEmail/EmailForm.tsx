@@ -26,11 +26,10 @@ export default function EmailForm({ email }: { email: string }) {
     }
 
     async function updateAndSetUser() {
-      // const response = await updateEmail(newEmail, user!.id);
       const response = await fetchData(
         `user/${user!.id}`,
         "PATCH",
-        { newEmail: newEmail },
+        { email: newEmail },
         "Failed to update email."
       );
       if (response.status === "error") {

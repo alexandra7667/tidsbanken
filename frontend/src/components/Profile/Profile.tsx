@@ -5,10 +5,12 @@ import PasswordForm from "./UpdatePassword/PasswordForm.tsx";
 import DeleteAccount from "./DeleteAccount/DeleteAccount.tsx";
 import ChoosePicture from "./ChoosePicture/ChoosePicture.tsx";
 import { UserContext } from "../../App.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { user, setUser } = useContext(UserContext);
   const [darkMode, setDarkMode] = useState<boolean>(user!.darkMode);
+  const navigate = useNavigate();
 
   const toggleTheme = () => {
     const newMode = !darkMode;
@@ -20,6 +22,12 @@ export default function Profile() {
     const htmlElement = document.querySelector("html");
     if(htmlElement) htmlElement.setAttribute("data-bs-theme", newMode ? "dark" : "light");
   };
+
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
+    navigate("/");
+  }
 
   return (
     <>
@@ -33,6 +41,7 @@ export default function Profile() {
         <Row className="justify-content-center">
           <Col xs="auto">
             <h2 className="m-2">{user!.name}</h2>
+            <Button variant="outline-primary" className="m-2" onClick={() => logout()}>Log out</Button>
           </Col>
         </Row>
 

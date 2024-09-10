@@ -75,7 +75,8 @@ namespace backend.Repositories
 
         public async Task<User?> UpdatePassword(User user, string newPassword)
         {
-            user.Password = newPassword;
+            string hashedPassword = PasswordHasher.HashPassword(newPassword);
+            user.Password = hashedPassword;
 
             await _databaseContext.SaveChangesAsync();
 

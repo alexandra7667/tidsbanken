@@ -7,9 +7,14 @@ import RequestView from "../RequestView/RequestView";
 import Admin from "../Admin/Admin.tsx";
 import { useContext } from "react";
 import { UserContext } from "../../App.tsx";
+import LoadingSpinner from "../Spinner/LoadingSpinner.tsx";
 
-export default function Main() {
+export default function Main({loading}) {
   const { user } = useContext(UserContext);
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <>
@@ -21,6 +26,7 @@ export default function Main() {
           </>
         ) : (
           <>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route

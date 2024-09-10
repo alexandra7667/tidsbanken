@@ -1,6 +1,5 @@
 import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
-// import updatePassword from "./UpdatePassword";
 import Password from "../../../interfaces/Password";
 import fetchData from "../../../functions/fetchData";
 import { UserContext } from "../../../App";
@@ -41,7 +40,7 @@ export default function PasswordForm() {
     const response = await fetchData(
       `user/${user!.id}/update_password`,
       "POST",
-      { newPassword: password.newPassword, oldPassword: password.oldPassword },
+      { oldPassword: password.oldPassword, newPassword: password.newPassword },
       "Failed to update password."
     );
     if (response.status === "error" && response.message) {
