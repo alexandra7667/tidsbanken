@@ -91,7 +91,7 @@ export default function Calendar() {
           {day}
         </div>
       ))}
-      {allDays && allDays.map((day, index) => (
+      {allDays && vacationMap.size > 0 && allDays.map((day, index) => (
         <Cell key={index} day={day} allUserIds={matchDays(day, month, year, vacationMap).allUserIds} />
       ))}
     </div>
