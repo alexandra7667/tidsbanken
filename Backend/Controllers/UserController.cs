@@ -5,7 +5,7 @@ using Backend.Models;
 using Backend.Payloads;
 using Backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
-
+using backend.Security;
 namespace Backend.Controllers
 {
     public static class UserApi
@@ -51,12 +51,6 @@ namespace Backend.Controllers
 
             // Convert the userRoleString to Enums.Role
             if (!Enum.TryParse(userRoleString, out Enums.Role userRole))
-            {
-                return TypedResults.Unauthorized();
-            }
-
-            // Check if the userRole is not ADMIN
-            if (userRole != Enums.Role.ADMIN)
             {
                 return TypedResults.Unauthorized();
             }
@@ -219,7 +213,9 @@ namespace Backend.Controllers
                 return TypedResults.NotFound("User not found");
             }
 
-            if (user.Password != payload.oldPassword)
+            string hashedPassword = PasswordHasher.HashPassword(payload.oldPassword);
+
+            if (user.Password != hashedPassword)
             {
                 return TypedResults.BadRequest("Old password is incorrect");
             }
