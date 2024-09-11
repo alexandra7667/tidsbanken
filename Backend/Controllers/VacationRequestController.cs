@@ -57,14 +57,14 @@ namespace Backend.Controllers
 
         public static async Task<IResult> updateRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] UpdateRequestPayload payload, int requestId, ClaimsPrincipal user)
         {
-            VacationRequest? vacationRequest = requestRepository.GetRequestById(requestId);
+            VacationRequest? vacationRequest = await requestRepository.GetRequestById(requestId);
 
             if(vacationRequest == null) {
                 return TypedResults.NotFound("No vacation request with that ID was found");
             }
 
             //Status update can only be done by administrator
-            if (payload.Approved != vacationRequest.isApproved) {
+            if (payload.Approved != vacationRequest.IsApproved.ToString()) {
                 string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
 
                 if (userRole != "ADMIN")
@@ -79,7 +79,7 @@ namespace Backend.Controllers
                     return TypedResults.BadRequest("Status update failed.");
                 }
 
-                return TypedResults.Ok(payload.Approved ? "The request was approved" : "The request was denied");
+                return TypedResults.Ok(payload.Approved == "Approved" ? "The request was approved" : "The request was denied");
             }
 
             //The request owner may only make updates to the request before the request has been moderated by an administrator.

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Payloads;
-using  Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using backend.Security;
 namespace backend.Repositories
 {
@@ -13,13 +13,16 @@ namespace backend.Repositories
     {
         private Context _databaseContext;
 
-        public UserRepository(Context databaseContext){
+        public UserRepository(Context databaseContext)
+        {
             _databaseContext = databaseContext;
         }
 
-        public async Task<User?> GetUserById(int UserId)
+        public async Task<User?> GetUserById(int userId)
         {
-            var user = await _databaseContext.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+            var user = await _databaseContext.Users
+                .Include(u => u.VacationRequests) // Include VacationRequests
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             return user;
         }
