@@ -1,7 +1,8 @@
 export default interface Comment {
-    id: string;
-    userId: string;
-    requestId: string;
+    id: number;
+    userId: number;
+    requestId: number;
     content: string;
+    createdAt: string;
   }
   

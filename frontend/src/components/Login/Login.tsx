@@ -49,7 +49,7 @@ export default function Login() {
     } else {
       localStorage.setItem("token", response.data.token);
       const expirationTime = Date.now() + 3600 * 1000; 
-      localStorage.setItem("expirationTime", expirationTime.toString());
+      localStorage.setItem("token_expiration", expirationTime.toString());
       setUser(response.data.userDTO);
       navigate("/dashboard");
     }

@@ -52,6 +52,8 @@ namespace Backend.Controllers
         {
             //Only Administrators and the request owner may create comments on a particular request
 
+            Console.WriteLine("PAYLOAD= ", payload);
+
             await commentRepository.AddComment(payload);
 
             return TypedResults.Ok("Comment created successfully.");

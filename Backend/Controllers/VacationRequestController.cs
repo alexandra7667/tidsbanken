@@ -57,8 +57,14 @@ namespace Backend.Controllers
 
         public static async Task<IResult> updateRequest([FromServices] IVacationRequestRepository requestRepository, [FromBody] UpdateRequestPayload payload, int requestId, ClaimsPrincipal user)
         {
+            VacationRequest? vacationRequest = requestRepository.GetRequestById(requestId);
+
+            if(vacationRequest == null) {
+                return TypedResults.NotFound("No vacation request with that ID was found");
+            }
+
             //Status update can only be done by administrator
-            if (payload.Approved != false) {
+            if (payload.Approved != vacationRequest.isApproved) {
                 string userRole = user.FindFirst(ClaimTypes.Role)?.Value;
 
                 if (userRole != "ADMIN")
@@ -70,10 +76,8 @@ namespace Backend.Controllers
 
                 if (isApproved == null)
                 {
-                    return TypedResults.NotFound("Request not found or approval failed.");
+                    return TypedResults.BadRequest("Status update failed.");
                 }
-
-                //When a request is successfully moderated by an administrator, the moderator and the time of moderation should be recorded on the request object
 
                 return TypedResults.Ok(payload.Approved ? "The request was approved" : "The request was denied");
             }

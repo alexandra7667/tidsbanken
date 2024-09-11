@@ -1,5 +1,5 @@
 export default interface VacationRequest {
-  id: string;
+  id: number;
   startDate: Date;
   endDate: Date;
   description: string;
