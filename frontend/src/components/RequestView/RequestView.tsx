@@ -3,20 +3,17 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import UpdateRequest from "./UpdateRequest/UpdateRequest";
-import AddComment from "./AddComment/AddComment";
 import RequestDetails from "./RequestDetails/RequestDetails";
-import Comment from "../../interfaces/Comment";
 import { UserContext } from "../../App";
 import VacationRequest from "../../interfaces/VacationRequest";
 import LoadingSpinner from "../Spinner/LoadingSpinner";
 import fetchData from "../../functions/fetchData";
-import { ErrorContext } from "../../App.tsx"
+import { ErrorContext } from "../../App.tsx";
 
 export default function RequestView() {
   const navigate = useNavigate();
   const { requestId } = useParams<{ requestId: string }>();
   const [request, setRequest] = useState<VacationRequest | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { user } = useContext(UserContext);
   const { setErrorMessage } = useContext(ErrorContext);
@@ -24,7 +21,6 @@ export default function RequestView() {
   useEffect(() => {
     if (requestId) {
       getRequest();
-      getComments();
     }
   }, []);
 
@@ -42,19 +38,7 @@ export default function RequestView() {
     }
   }
 
-  async function getComments() {
-    const response = await fetchData(
-      `request/${requestId}/comment`,
-      "GET",
-      null,
-      "Failed to get comments."
-    );
-    if (response.status === "error" && response.message) {
-      setErrorMessage(response.message);
-    } else {
-      setComments(response.data);
-    }
-  }
+
 
   async function deleteRequest() {
     const response = await fetchData(
@@ -71,22 +55,15 @@ export default function RequestView() {
     }
   }
 
+  const goToRequestHistory = () => {
+    navigate(`/requesthistory/${requestId}`);
+  };
+
   return (
     <>
       {request ? (
         <>
-          {comments ? (
-            <>
-              <RequestDetails request={request} comments={comments} />
-
-              {/* The request owner and Administrators may add comments */}
-              {(user!.id === request.userId || user!.role === "admin") && (
-                <AddComment requestId={request.id} setComments={setComments} />
-              )}
-            </>
-          ) : (
-            <LoadingSpinner />
-          )}
+          <RequestDetails request={request} />
 
           {/* Both the request owner and Administrators should be able to make changes to the request title and period */}
           {request.isApproved === "PENDING" && (
@@ -102,8 +79,12 @@ export default function RequestView() {
             </>
           )}
 
+          <Button variant="outline-primary" onClick={() => goToRequestHistory}>
+            Go to Request history
+          </Button>
+
           {/* An administrator should be able to delete a request unless it's their own request */}
-          {user!.id !== request.userId && user!.role === "admin" && (
+          {user!.id !== request.userId && user!.role === 1 && (
             <Button onClick={deleteRequest} variant="outline-danger">
               Delete request
             </Button>

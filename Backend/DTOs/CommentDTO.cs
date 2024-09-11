@@ -9,6 +9,7 @@ namespace Backend.DTOs
         public string Content { get; set; }
         public int VacationRequestId { get; set; }
         public int UserId { get; set; }
+        public string CreatedAt { get; set; }
 
 
         public CommentDTO(Comment comment)
@@ -17,6 +18,7 @@ namespace Backend.DTOs
             Content = comment.Content;
             VacationRequestId = comment.VacationRequestId;
             UserId = comment.UserId;
+            CreatedAt = comment.CreatedAt.ToString();
         }
     }
 }

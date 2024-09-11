@@ -7,6 +7,8 @@ import UserContextType from "./interfaces/UserContextType.ts";
 import ErrorContextType from "./interfaces/ErrorContextType.ts";
 import fetchData from "./functions/fetchData.ts";
 import ErrorAlert from "./components/Alert/ErrorAlert.tsx";
+import { useNavigate } from "react-router-dom";
+
 
 const defaultUserContext: UserContextType = {
   user: null,
@@ -24,6 +26,8 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const expirationTime = Number(localStorage.getItem("token_expiration"));
@@ -33,6 +37,7 @@ function App() {
       localStorage.removeItem("token_expiration");
       console.log("Token expired");
       setLoading(false);
+      navigate('/');
     } 
     else {
       const storedToken = localStorage.getItem("token");

@@ -1,13 +1,12 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-// import postComment from "./PostComment";
-import Comment from "../../../interfaces/Comment";
-import { UserContext } from "../../../App";
-import fetchData from "../../../functions/fetchData";
-import { ErrorContext } from "../../../App.tsx";
+import Comment from "../../../../interfaces/Comment.ts";
+import { UserContext } from "../../../../App.tsx";
+import fetchData from "../../../../functions/fetchData.ts";
+import { ErrorContext } from "../../../../App.tsx";
 
 interface AddCommentProps {
-  requestId: string;
+  requestId: number;
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
@@ -18,7 +17,7 @@ export default function AddComment({
   const { user } = useContext(UserContext);
   const { setErrorMessage } = useContext(ErrorContext);
   const [newComment, setNewComment] = useState<Comment>({
-    id: "",
+    id: 0,
     userId: user!.id,
     requestId: requestId,
     content: "",
@@ -27,22 +26,21 @@ export default function AddComment({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewComment((prevComment) => ({
       ...prevComment,
-      comment: e.target.value,
+      content: e.target.value,
     }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("New comment: ", newComment);
-    // postComment(newComment, setComments);
     postComment();
   };
 
   async function postComment() {
     const response = await fetchData(
-      `request/${requestId}/comment`,
+      `comment/${requestId}/comment`,
       "POST",
-      {requestId: requestId, userId: newComment.userId, content: newComment.content},
+      {vacationRequestId: requestId, userId: newComment.userId, content: newComment.content},
       "Failed to create new comment."
     );
     if (response.status === "error" && response.message) {
@@ -54,16 +52,16 @@ export default function AddComment({
 
   return (
     <Form noValidate onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formComment">
-        <Form.Label>Title</Form.Label>
+      <Form.Group className="my-3" controlId="formComment">
         <Form.Control
           type="text"
+          placeholder="Enter new comment..."
           name="comment"
           value={newComment.content}
           onChange={handleChange}
         />
       </Form.Group>
-      <Button as="input" type="submit" value="Post comment"></Button>
+      <Button as="input" type="submit" value="Post new comment"></Button>
     </Form>
   );
 }

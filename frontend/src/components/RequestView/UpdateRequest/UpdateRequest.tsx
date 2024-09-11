@@ -1,9 +1,9 @@
 import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-// import updateRequest from "./Update";
 import VacationRequest from "../../../interfaces/VacationRequest";
 import fetchData from "../../../functions/fetchData";
 import { ErrorContext } from "../../../App.tsx";
+import { UserContext } from "../../../App.tsx";
 
 interface UpdateRequestProps {
   request: VacationRequest;
@@ -17,11 +17,12 @@ export default function UpdateRequest({
   setModalOpen,
 }: UpdateRequestProps) {
   const [updatedFields, setUpdatedFields] = useState({
-    description: request.description,
+    isApproved: request.isApproved,
     startDate: request.startDate.toString(),
     endDate: request.endDate.toString(),
   });
   const { setErrorMessage } = useContext(ErrorContext);
+  const { user } = useContext(UserContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,10 +33,16 @@ export default function UpdateRequest({
     }));
   };
 
+  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setUpdatedFields((prevFields) => ({
+      ...prevFields,
+      isApproved: e.target.value,
+    }))
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Request fields: ", updatedFields);
-    // updateRequest(request.id, updatedFields);
     updateRequest();
   };
 
@@ -43,7 +50,7 @@ export default function UpdateRequest({
     const response = await fetchData(
       `request/${request.id}`,
       "PATCH",
-      null,
+      {approved: updatedFields.isApproved, startDate: updatedFields.startDate, endDate: updatedFields.endDate },
       "Failed to update vacation request."
     );
     if (response.status === "error" && response.message) {
@@ -56,20 +63,25 @@ export default function UpdateRequest({
   return (
     <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>Update request</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formDescription">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              type="text"
-              name="description"
-              value={updatedFields.description}
-              onChange={handleChange}
-            />
+          {user!.role === 1 && (
+            <Form.Group className="mb-3" controlId="formDescription">
+            <Form.Label>Status</Form.Label>
+            <Form.Select
+              name="isApproved"
+              value={updatedFields.isApproved}
+              onChange={handleStatusChange}
+            >
+              <option value="APPROVED">APPROVED</option>
+              <option value="PENDING">PENDING</option>
+              <option value="DENIED">DENIED</option>
+            </Form.Select>
           </Form.Group>
+          )}
 
           <Form.Group className="mb-3" controlId="formStartDate">
             <Form.Label>Start date</Form.Label>

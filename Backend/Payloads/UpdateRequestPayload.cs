@@ -1,9 +1,8 @@
 namespace Backend.Payloads
 {
     public record UpdateRequestPayload(
-        bool Approved,
+        string Approved,
         DateTime StartDate,
         DateTime EndDate,
-        string title
     );
 }

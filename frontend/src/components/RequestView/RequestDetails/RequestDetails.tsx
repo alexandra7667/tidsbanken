@@ -1,42 +1,67 @@
-import { Card, Button } from "react-bootstrap";
-import CommentCard from "../CommentCard/CommentCard";
-import { useNavigate } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import CommentCard from "../comments/CommentCard/CommentCard";
 import Comment from "../../../interfaces/Comment";
 import VacationRequest from "../../../interfaces/VacationRequest";
+import AddComment from "../comments/AddComment/AddComment";
+import { UserContext } from "../../../App";
+import { useContext, useEffect, useState } from "react";
+import fetchData from "../../../functions/fetchData";
+import { ErrorContext } from "../../../App";
 
 interface RequestDetailsProps {
   request: VacationRequest;
-  comments: Comment[];
 }
 
 export default function RequestDetails({
   request,
-  comments,
 }: RequestDetailsProps) {
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const { setErrorMessage } = useContext(ErrorContext);
+  const [comments, setComments] = useState<Comment[]>([]);
 
-  const goToRequestHistory = () => {
-    navigate(`/requesthistory/${request.userId}`);
-  };
+  useEffect(() => {
+    if (request.id) {
+      getComments();
+    }
+  }, []);
+
+  async function getComments() {
+    const response = await fetchData(
+      `comment/${request.id}/comment`,
+      "GET",
+      null,
+      "Failed to get comments."
+    );
+    if (response.status === "error" && response.message) {
+      setErrorMessage(response.message);
+    } else {
+      setComments(response.data);
+      console.log("MESSAGES= ", response.data);
+    }
+  }
 
   return (
     <Card style={{ width: "60%" }}>
       <Card.Body>
         <Card.Title>{request.isApproved}</Card.Title>
         <Card.Text>
-          Start date: {request.startDate.toString()}
-          End date: {request.endDate.toString()}
+        {request.description}
+          <br />
+          Start date: {request.startDate.substring(0, 10)}  
+          <br />  
+          End date: {request.endDate.substring(0, 10)}
           <div style={{ border: "1px solid #ccc", borderRadius: "5px" }}>
             {comments &&
               comments.length > 0 &&
               comments.map((comment, index) => (
                 <CommentCard key={index} comment={comment} />
               ))}
+              {/* The request owner and Administrators may add comments */}
+              {(user!.id === request.userId || user!.role === 1) && (
+                <AddComment requestId={request.id} setComments={setComments} />
+              )}
           </div>
         </Card.Text>
-        <Button variant="outline-primary" onClick={() => goToRequestHistory}>
-          Go to Request history
-        </Button>
       </Card.Body>
     </Card>
   );

@@ -1,9 +1,10 @@
-using Backend.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Data;
+using Backend.Models;
 using Backend.Payloads;
+using Microsoft.EntityFrameworkCore;
+
 namespace Backend.Repositories
 {
     public class VacationRequestRepository : IVacationRequestRepository
@@ -60,12 +61,17 @@ namespace Backend.Repositories
         {
             var request = await _databaseContext.VacationRequests.FindAsync(requestId);
 
-            if (request == null)
+            //the out keyword is used to indicate that a parameter is being passed by reference (not a copy) and will be assigned a value inside the method
+            if (Enum.TryParse(payload.Approved, out VacationRequestState result))
+            {
+                request.IsApproved = result;
+                //When a request is successfully moderated by an administrator, the moderator and the time of moderation should be recorded on the request object
+                request.UpdatedAt = DateTime.UtcNow;
+            }
+            else
             {
                 return false;
             }
-
-            request.IsApproved = payload.Approved ? Enums.VacationRequestState.APPROVED : Enums.VacationRequestState.DENIED;
 
             _databaseContext.VacationRequests.Update(request);
 
@@ -77,11 +83,6 @@ namespace Backend.Repositories
         public async Task<bool> UpdateRequest(UpdateRequestPayload payload, int requestId)
         {
             var request = await _databaseContext.VacationRequests.FindAsync(requestId);
-
-            if (request == null)
-            {
-                return false;
-            }
 
             request.StartDate = payload.StartDate;
             request.EndDate = payload.EndDate;
@@ -103,7 +104,7 @@ namespace Backend.Repositories
             }
 
             _databaseContext.VacationRequests.Remove(request);
-            
+
             await _databaseContext.SaveChangesAsync();
 
             return true;
