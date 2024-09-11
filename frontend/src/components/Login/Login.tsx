@@ -48,6 +48,8 @@ export default function Login() {
       if (response.message) setErrorMessage(response.message);
     } else {
       localStorage.setItem("token", response.data.token);
+      const expirationTime = Date.now() + 3600 * 1000; 
+      localStorage.setItem("expirationTime", expirationTime.toString());
       setUser(response.data.userDTO);
       navigate("/dashboard");
     }

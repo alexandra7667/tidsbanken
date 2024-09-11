@@ -26,12 +26,21 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      fetchAndSetUser();
-    }
-    else {
+    const expirationTime = Number(localStorage.getItem("token_expiration"));
+
+    if (expirationTime && Date.now() > expirationTime) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("token_expiration");
+      console.log("Token expired");
       setLoading(false);
+    } 
+    else {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        fetchAndSetUser();
+      } else {
+        setLoading(false);
+      }
     }
   }, []);
 
